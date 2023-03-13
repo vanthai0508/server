@@ -26,6 +26,8 @@ Route::group([
     ], function() {
         Route::get('listUser', 'App\Http\Controllers\UserController@list');
         Route::get('me/logout', 'App\Http\Controllers\AuthController@logout');
+        Route::post('upload-file', 'App\Http\Controllers\VideoController@uploadVideo');
+        Route::get('listVideo', 'App\Http\Controllers\VideoController@list');
     });
 });
 

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
 
     protected $userService;
@@ -21,8 +21,7 @@ class UserController extends Controller
     
     public function list()
     {
-        
-        return $this->userService->list();
+        return $this->sendResponse($this->userService->list(), "List user");
     }
 
     // public function update(Request $request , $id)
