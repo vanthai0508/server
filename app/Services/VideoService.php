@@ -31,8 +31,10 @@ class VideoService
             $video = new Video();
             $video->title = $request->title;
             $video->path = $filePath;
+            
             $video->save();
         }
+        $video->category()->sync($request->get('category'));
         return $video;
     }
 

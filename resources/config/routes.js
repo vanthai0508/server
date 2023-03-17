@@ -6,11 +6,21 @@ import Register from '../js/components/Register.vue'
 import Welcome from '../js/components/Welcome.vue'
 import UploadFile from '../js/components/UploadFile.vue'
 import House from '../js/components/House.vue'
+import Wel from '../js/components/Wel.vue'
+import Category from '../js/components/Category.vue'
 // import Contact from '@/components/Contact.vue'
 
 const routes = [
     {
         path: '/',
+        name: "welcome",
+        component: Wel,
+        meta: {
+            auth: false
+        }
+    },
+    {
+        path: '/home',
         name: "home",
         component: Home,
         meta: {
@@ -49,6 +59,13 @@ const routes = [
     {
         path: '/house',
         component: House,
+        meta: {
+            auth: false
+        }
+    },
+    {
+        path: '/category',
+        component: Category,
         meta: {
             auth: false
         }

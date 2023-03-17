@@ -11,4 +11,9 @@ class Video extends Model
     protected $fillable = [
         'title', 'path'
     ];
+
+    public function category()
+    {
+        return $this->belongsToMany(Category::class);
+    }
 }

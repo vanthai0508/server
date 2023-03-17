@@ -9,17 +9,10 @@ import Cookies from 'js-cookie';
   export default {
     data(){
       return {
-        email: '',
-        password: '',
-        error: false,
-        errors: {},
-        success: false
       };
     },
     methods: {
             load(){
-              this.email = '',
-              this.password = ''
             },
             login() {
                 var result = {
@@ -31,10 +24,8 @@ import Cookies from 'js-cookie';
                   window.axios = require('axios'),
                   setUserInfo(JSON.stringify(data.success.user)),
                   setAccessToken(data.success.token),
-                  
                   window.axios.defaults.headers.common['Authorization'] =
                   'Bearer ' + data.success.token,
-                  
                   alert('Thanh cong!!!')
                   this.$router.push('/house')
                 },

@@ -28,6 +28,8 @@ Route::group([
         Route::get('me/logout', 'App\Http\Controllers\AuthController@logout');
         Route::post('upload-file', 'App\Http\Controllers\VideoController@uploadVideo');
         Route::get('listVideo', 'App\Http\Controllers\VideoController@list');
+        Route::post('createCategory', 'App\Http\Controllers\CategoryController@create');
+        Route::get('listCategory', 'App\Http\Controllers\CategoryController@list');
     });
 });
 

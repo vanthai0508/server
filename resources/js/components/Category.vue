@@ -1,29 +1,31 @@
 <template>
-    <h1>This is home page </h1>
+    <h1>List category </h1>
+    <div class="but">
+        <button style="--clr:#39FF14"><span>
+            <router-link class="link" to="/home">
+                Add category
+            </router-link>
+        </span><i></i></button>
+    </div>    
     <div>
-      <table class="container">
-         <thead>
-          <tr>
-            <th scope="col" class="category-order">STT</th>
-            <th scope="col">Title</th>
-            <th scope="col">Video</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in videos">
-            <th scope="row">{{ index + 1 }}</th>
-            <td>{{ item.title }}</td>
-            <td>
-               <video width="320" height="240" controls>
-                  <source :src="'storage/'+item.path" type="video/mp4">
-               </video>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
+        <table class="container">
+            <thead>
+                <tr>
+                    <th scope="col" class="category-order">STT</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, index) in categories">
+                    <th scope="row">{{ index + 1 }}</th>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.description }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+    
  </template>
  
 <script>
@@ -34,13 +36,14 @@ import { RouterLink, RouterView } from 'vue-router';
  export default {
     data() {
       return {
-         videos: {}
+        categories: {}
       }
     },
     methods: {
         load() {
-            axios.get("/api/auth/listVideo").then(({ data }) => {
-               this.videos = data.data
+            axios.get("/api/auth/listCategory").then(({ data }) => {
+               this.categories = data.data
+               console.log(this.categories)
             })
         }
     },
@@ -99,6 +102,11 @@ h2 a {
     font-size: 1em;
   text-align: left;
   color: #185875;
+}
+
+.but {
+    text-align: right;
+    padding-right: 10%;
 }
 
 .container td {
@@ -169,5 +177,83 @@ h2 a {
 @media (max-width: 800px) {
 .container td:nth-child(4),
 .container th:nth-child(4) { display: none; }
-}</style>
+}
+
+button {
+  position: relative;
+  background: #444;
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  border: none;
+  letter-spacing: 0.1rem;
+  font-size: 1rem;
+  padding: 1rem 3rem;
+  transition: 0.2s;
+}
+
+button:hover {
+  letter-spacing: 0.2rem;
+  padding: 1.1rem 3.1rem;
+  background: var(--clr);
+  color: var(--clr);
+  /* box-shadow: 0 0 35px var(--clr); */
+  animation: box 3s infinite;
+}
+
+button::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: #272822;
+}
+
+button span {
+  position: relative;
+  z-index: 1;
+}
+button i {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+button i::before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 2px;
+  left: 80%;
+  top: -2px;
+  border: 2px solid var(--clr);
+  background: #272822;
+  transition: 0.2s;
+}
+
+button:hover i::before {
+  width: 15px;
+  left: 20%;
+  animation: move 3s infinite;
+}
+
+button i::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 2px;
+  left: 20%;
+  bottom: -2px;
+  border: 2px solid var(--clr);
+  background: #272822;
+  transition: 0.2s;
+}
+
+button:hover i::after {
+  width: 15px;
+  left: 80%;
+  animation: move 3s infinite;
+}
+</style>
+ 
+
  
