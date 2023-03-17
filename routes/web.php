@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+// Auth::routes(['verify' => true]);
+
+
+
+Route::get('/{vue_capture?}', function () {
     return view('welcome');
-});
+})->where('vue_capture', '[\/\w\.-]*');

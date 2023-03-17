@@ -20,8 +20,9 @@
     },
     "dependencies": {
         "@websanova/vue-auth": "^4.2.1",
+        "js-cookie": "^3.0.1",
         "vue": "^3.2.36",
         "vue-resource": "^1.5.3",
-        "vue-router": "^4.0.13"
+        "vue-router": "^4.1.6"
     }
 }

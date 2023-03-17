@@ -47,14 +47,12 @@ import axios from 'axios'
                     email: this.email,
                     password: this.password,
                     c_password: this.c_password
-
                 }
                 axios.post("/api/auth/signup", result)
                 .then(({ data }) => ( 
-                    alert('Thanh cong!!!'),
-                    console.log(this.name)),
-                    console.log()
-                
+                    alert('Thanh cong!!!')
+                    // console.log(this.name)
+                    ),
                 );
             }
             // notifyEditSuccess() {
@@ -141,7 +139,10 @@ button:hover {
    box-shadow:4px 4px 10px rgba(0,0,0,0.2);
  }
 .container {
-   padding: 16px;
+    padding: 16px;
+   width: 800px;
+   text-align: center;
+   display: inline-block;
  }
 .clearfix::after {
    content: "";

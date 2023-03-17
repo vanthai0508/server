@@ -15,6 +15,11 @@
                 Register
             </p>
         </router-link>
+        <router-link class="link" to="/uploadFile">
+            <p class="item-menu">
+                Upload file
+            </p>
+        </router-link>
     </div>
 </template>
 <script>

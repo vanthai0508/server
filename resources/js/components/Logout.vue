@@ -1,25 +1,5 @@
-//login.vue
 
 <template>
-    <div>
-        <form autocomplete="off" @submit.prevent="login" v-if="!success" method="post" >
-            <div class="container">
-                <h1>Form Đăng Nhập</h1>
-                <p>Xin hãy nhập biểu mẫu bên dưới để đăng nhập.</p>
-                <hr>
-                <label for="Email"><b>Email</b></label>
-                    <input type="text" v-model="email" placeholder="Email" name="Email" required>
-                <label for="Password"><b>Password</b></label>
-                    <input type="password" v-model="password" placeholder="Password" name="Password" required>
-                <label>
-                    <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Nhớ Đăng Nhập
-                </label>
-                <div class="clearfix">
-                    <button type="submit" class="signupbtn">Sign in</button>
-                </div>
-            </div>
-        </form>
-    </div>
 </template>
 <script> 
 import { thisTypeAnnotation } from '@babel/types';
