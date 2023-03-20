@@ -19,9 +19,12 @@
         "vue-template-compiler": "^2.7.14"
     },
     "dependencies": {
+        "@syncfusion/ej2-vue-dropdowns": "^20.4.54",
+        "@vueform/multiselect": "^2.6.1",
         "@websanova/vue-auth": "^4.2.1",
         "js-cookie": "^3.0.1",
         "vue": "^3.2.36",
+        "vue-multiselect": "^2.1.7",
         "vue-resource": "^1.5.3",
         "vue-router": "^4.1.6"
     }

@@ -1,5 +1,12 @@
 <template>
     <h1>This is home page </h1>
+    <div class="but">
+        <button class="addbut" style="--clr:#39FF14"><span>
+            <router-link class="link" to="/uploadFile">
+                Add video
+            </router-link>
+        </span><i></i></button>
+    </div>   
     <div>
       <table class="container">
          <thead>

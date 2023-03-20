@@ -1,7 +1,7 @@
 <template>
     <h1>List category </h1>
     <div class="but">
-        <button style="--clr:#39FF14"><span>
+        <button class="addbut" style="--clr:#39FF14"><span>
             <router-link class="link" to="/home">
                 Add category
             </router-link>
@@ -179,7 +179,7 @@ h2 a {
 .container th:nth-child(4) { display: none; }
 }
 
-button {
+.addbut {
   position: relative;
   background: #444;
   color: #fff;
@@ -190,9 +190,10 @@ button {
   font-size: 1rem;
   padding: 1rem 3rem;
   transition: 0.2s;
+  width: 250px;
 }
 
-button:hover {
+.addbut:hover {
   letter-spacing: 0.2rem;
   padding: 1.1rem 3.1rem;
   background: var(--clr);
@@ -201,24 +202,24 @@ button:hover {
   animation: box 3s infinite;
 }
 
-button::before {
+.addbut::before {
   content: "";
   position: absolute;
   inset: 2px;
   background: #272822;
 }
 
-button span {
+.addbut span {
   position: relative;
   z-index: 1;
 }
-button i {
+.addbut i {
   position: absolute;
   inset: 0;
   display: block;
 }
 
-button i::before {
+.addbut i::before {
   content: "";
   position: absolute;
   width: 10px;
@@ -230,13 +231,13 @@ button i::before {
   transition: 0.2s;
 }
 
-button:hover i::before {
+.addbut:hover i::before {
   width: 15px;
   left: 20%;
   animation: move 3s infinite;
 }
 
-button i::after {
+.addbut i::after {
   content: "";
   position: absolute;
   width: 10px;
@@ -248,7 +249,7 @@ button i::after {
   transition: 0.2s;
 }
 
-button:hover i::after {
+.addbut:hover i::after {
   width: 15px;
   left: 80%;
   animation: move 3s infinite;

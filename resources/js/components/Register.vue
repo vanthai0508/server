@@ -50,8 +50,8 @@ import axios from 'axios'
                 }
                 axios.post("/api/auth/signup", result)
                 .then(({ data }) => ( 
-                    alert('Thanh cong!!!')
-                    // console.log(this.name)
+                    alert('Thanh cong!!!'),
+                    this.$router.push('/login')
                     ),
                 );
             }

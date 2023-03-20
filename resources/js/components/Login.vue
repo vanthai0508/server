@@ -51,10 +51,8 @@ import Cookies from 'js-cookie';
                   window.axios = require('axios'),
                   setUserInfo(JSON.stringify(data.success.user)),
                   setAccessToken(data.success.token),
-                  
                   window.axios.defaults.headers.common['Authorization'] =
                   'Bearer ' + data.success.token,
-                  
                   alert('Thanh cong!!!')
                   this.$router.push('/house')
                 },
@@ -89,25 +87,25 @@ import Cookies from 'js-cookie';
 <style lang="css" scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
  * {box-sizing: border-box}
- body{
-   font-family: 'Noto Sans JP', sans-serif;
- }
- h1, label{
-   color: DodgerBlue;
- }
-   input[type=text], input[type=password] {
-   width: 100%;
-   padding: 15px;
-   margin: 5px 0 22px 0;
-   display: inline-block;
-   border: none;
-   width:100%;
-   resize: vertical;
-   padding:15px;
-   border-radius:15px;
-   border:0;
-   box-shadow:4px 4px 10px rgba(0,0,0,0.2);
- }
+body{
+  font-family: 'Noto Sans JP', sans-serif;
+}
+h1, label{
+  color: DodgerBlue;
+}
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  width:100%;
+  resize: vertical;
+  padding:15px;
+  border-radius:15px;
+  border:0;
+  box-shadow:4px 4px 10px rgba(0,0,0,0.2);
+}
 input[type=text]:focus, input[type=password]:focus {
    outline: none;
 }
@@ -124,30 +122,30 @@ button {
    cursor: pointer;
    width: 100%;
    opacity: 0.9;
- }
+}
 button:hover {
    opacity:1;
- }
+}
 .cancelbtn {
    padding: 14px 20px;
    background-color: #f44336;
- }
+}
 .signupbtn {
    float: left;
    width: 100%;
    border-radius:15px;
    border:0;
    box-shadow:4px 4px 10px rgba(0,0,0,0.2);
- }
+}
 .container {
    padding: 16px;
    width: 800px;
    text-align: center;
    display: inline-block;
- }
+}
 .clearfix::after {
    content: "";
    clear: both;
    display: table;
- }
+}
 </style>
