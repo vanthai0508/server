@@ -3,9 +3,10 @@
 <template>
     <div>
         <div class="upload">
-            <form autocomplete="off" @submit.prevent="uploadFile" v-if="!success" method="post" >
-                <div class="container">
+            <form autocomplete="off" @submit.prevent="uploadFile"  method="post" >
+                <div class="containerss">
                     <h1>Form upload file</h1>
+                    <h1>{{ this.idEdit }}</h1>
                     <hr>
                     <label>
                         Title:
@@ -43,9 +44,11 @@
     </div>
 </template>
 <script>
-import { ref } from 'vue'
-import Multiselect from '@vueform/multiselect'
+    import { ref } from 'vue'
+    import Multiselect from '@vueform/multiselect'
     import axios from 'axios'
+    import eventBus from 'vue3-eventbus'
+
     // import Multiselect from 'vue-multiselect'
     export default {
         data(){
@@ -54,7 +57,8 @@ import Multiselect from '@vueform/multiselect'
                 title: '',
                 selectedFile: null,
                 categories: [],
-                categorySelected: ''
+                categorySelected: '',
+                idEdit: ''
             } 
         },
         methods: {
@@ -102,12 +106,22 @@ import Multiselect from '@vueform/multiselect'
             })
             }
         },
-        mounted() {
-            // this.load()
-        },
-        created(){
+        created() {
+            
+            eventBus.on('inputData', (payload) => {
+                console.log('Received event cr:', payload);
+            })
             this.load()
-        }
+        },
+        
+        mounted() {
+            // eventBus.on('inputData', (payload) => {
+            //     console.log('Received event:', payload.id);
+            // });
+        },
+        beforeUnmount() {
+            eventBus.off('inputData');
+        },
     }
 </script>
 <style>
@@ -174,11 +188,11 @@ button:hover {
    border:0;
    box-shadow:4px 4px 10px rgba(0,0,0,0.2);
  }
-.container {
+.containerss {
    padding: 16px;
    width: 800px;
-   text-align: center;
-   display: inline-block;
+   text-align: left; 
+    display: inline-block;
  }
 .clearfix::after {
    content: "";
@@ -188,7 +202,7 @@ button:hover {
 .upload {
     padding: 16px;
     width: 800px;
-    text-align: center;
-   display: inline-block;
+    /* text-align: left;
+   display: inline-block; */
 }
 </style>

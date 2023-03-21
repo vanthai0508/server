@@ -14,7 +14,7 @@
             <th scope="col" class="category-order">STT</th>
             <th scope="col">Title</th>
             <th scope="col">Video</th>
-            <th></th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -26,6 +26,11 @@
                   <source :src="'storage/'+item.path" type="video/mp4">
                </video>
             </td>
+            <td>
+              <button @click="addEditVideo(item.id)">
+                Edit
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -36,12 +41,14 @@
 <script>
 import axios from 'axios';
 import { RouterLink, RouterView } from 'vue-router';
+import eventBus from 'vue3-eventbus';
 
 
  export default {
     data() {
       return {
-         videos: {}
+         videos: {},
+         id: ''
       }
     },
     methods: {
@@ -49,6 +56,13 @@ import { RouterLink, RouterView } from 'vue-router';
             axios.get("/api/auth/listVideo").then(({ data }) => {
                this.videos = data.data
             })
+        },
+        addEditVideo(id) {
+          console.log('id', id)
+          eventBus.emit('inputData', { id })
+          // this.id = ''
+          console.log('home')
+          this.$router.push('/uploadFile')
         }
     },
     mounted() {

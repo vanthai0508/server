@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <center>
     <h1 style="text-align: center; 
         color: green">GeeksforGeeks</h1>
@@ -30,14 +30,6 @@
       </select>
     </div>
     <br />
-    <div>
-      Select the number:
-      <select v-model="choose">
-        <option :value="{ number: 987 }">987</option>
-        <option :value="{ number: 258 }">258</option>
-        <option :value="{ number: 456 }">456</option>
-      </select>
-    </div>
   </center>
 </template>
 <script>
@@ -50,4 +42,4 @@ export default {
     }
   },
 }
-</script>
+</script> -->

@@ -2,7 +2,7 @@
     <h1>List category </h1>
     <div class="but">
         <button class="addbut" style="--clr:#39FF14"><span>
-            <router-link class="link" to="/home">
+            <router-link class="link" to="/addCategory">
                 Add category
             </router-link>
         </span><i></i></button>

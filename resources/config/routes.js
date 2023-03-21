@@ -8,6 +8,7 @@ import UploadFile from '../js/components/UploadFile.vue'
 import House from '../js/components/House.vue'
 import Wel from '../js/components/Wel.vue'
 import Category from '../js/components/Category.vue'
+import addCategory from '../js/components/AddCategory.vue'
 // import Contact from '@/components/Contact.vue'
 
 const routes = [
@@ -66,6 +67,13 @@ const routes = [
     {
         path: '/category',
         component: Category,
+        meta: {
+            auth: false
+        }
+    },
+    {
+        path: '/addCategory',
+        component: addCategory,
         meta: {
             auth: false
         }
