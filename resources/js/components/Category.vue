@@ -1,10 +1,8 @@
 <template>
     <h1>List category </h1>
     <div class="but">
-        <button class="addbut" style="--clr:#39FF14"><span>
-            <router-link class="link" to="/addCategory">
-                Add category
-            </router-link>
+        <button class="addbut" style="--clr:#39FF14" @click="addEditCategory(0)"><span>
+            Add category
         </span><i></i></button>
     </div>    
     <div>
@@ -14,6 +12,7 @@
                     <th scope="col" class="category-order">STT</th>
                     <th scope="col">Name</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +20,9 @@
                     <th scope="row">{{ index + 1 }}</th>
                     <td>{{ item.name }}</td>
                     <td>{{ item.description }}</td>
+                    <td><button @click="addEditCategory(item.id)">
+                      Edit
+                    </button></td>
                 </tr>
             </tbody>
         </table>
@@ -31,6 +33,7 @@
 <script>
 import axios from 'axios';
 import { RouterLink, RouterView } from 'vue-router';
+import EventBus from 'vue3-eventbus'
 
 
  export default {
@@ -43,12 +46,16 @@ import { RouterLink, RouterView } from 'vue-router';
         load() {
             axios.get("/api/auth/listCategory").then(({ data }) => {
                this.categories = data.data
-               console.log(this.categories)
+              //  console.log(this.categories)
             })
+        },
+        addEditCategory(param){
+          this.$store.commit('changeId', param)
+          this.$router.push('/addCategory')
         }
     },
     mounted() {
-        this.load();
+        // this.load();
     },
     created() {
         this.load();

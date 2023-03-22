@@ -36,4 +36,27 @@ class CategoryService
             return null;
         }
     }
+
+    public function find($id)
+    {
+        try {
+            return $this->category->find($id);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return null;
+        }
+    }
+
+    public function update($id, $request)
+    {
+        try {
+
+            $category = $this->find($id);
+            $category->update($request);
+            return $category;
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return null;
+        }
+    }
 }

@@ -3,7 +3,7 @@
 <template>
     <div>
         <div class="upload">
-            <form autocomplete="off" @submit.prevent="createCategory" v-if="!success" method="post" >
+            <form autocomplete="off" @submit.prevent="addEditCategory()" method="post" >
                 <div class="containers">
                     <h1>Form create category</h1>
                     <hr>
@@ -17,7 +17,6 @@
                     </div>
                 </div>
             </form>
-            
         </div>
     </div>
 </template>
@@ -28,21 +27,48 @@
         data(){
             return {
                 name: '',
-                description: ''
+                description: '',
+                idEdit: ''
             } 
         },
         methods: {
             load(){
-                this.getListCategory()
+            },
+            findCategory(id){
+                axios.get('/api/auth/findCategory/' + id)
+                .then(response => {
+                    this.name = response.data.data.name,
+                    this.description = response.data.data.description
+                })
+                .catch(error => {
+                    console.error('Create failed:', error)
+                })
+            },
+            addEditCategory(){
+                if(this.idEdit == 0){
+                    this.createCategory()
+                } else {
+                    this.editCategory(this.idEdit)
+                }
+            },
+            editCategory(id){
+                axios.put('/api/auth/updateCategory/' + id, {
+                    name: this.name,
+                    description: this.description
+                })
+                .then(response => {
+                    this.$router.push('/category')
+                })
+                .catch(error => {
+                    console.error('Edit failed:', error)
+                })
             },
             createCategory(){
                 const formData = new FormData();
                 formData.append('name', this.name);
                 formData.append('description', this.description);
-                    
                 axios.post('/api/auth/createCategory', formData)
                 .then(response => {
-                    alert('Thanh cong!!!'),
                     this.$router.push('/category')
                 })
                 .catch(error => {
@@ -51,10 +77,12 @@
             },
         },
         mounted() {
-            // this.load()
         },
         created(){
-            // this.load()
+            this.idEdit = this.$store.state.id
+            if(this.idEdit != 0){
+                this.findCategory(this.idEdit)
+            }
         }
     }
 </script>

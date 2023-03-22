@@ -66,9 +66,6 @@ const {emit}=useEventsBus()
         },
         addEditVideo(param) {
           this.$store.commit('changeId', param)
-          // emi  1t('sidebarCollapsed',id)
-          // // this.id = ''
-          // console.log('home')
           this.$router.push('/uploadFile')
         }
     },

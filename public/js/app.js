@@ -19767,30 +19767,56 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       name: '',
-      description: ''
+      description: '',
+      idEdit: ''
     };
   },
   methods: {
-    load: function load() {
-      this.getListCategory();
+    load: function load() {},
+    findCategory: function findCategory(id) {
+      var _this = this;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/auth/findCategory/' + id).then(function (response) {
+        _this.name = response.data.data.name, _this.description = response.data.data.description;
+      })["catch"](function (error) {
+        console.error('Create failed:', error);
+      });
+    },
+    addEditCategory: function addEditCategory() {
+      if (this.idEdit == 0) {
+        this.createCategory();
+      } else {
+        this.editCategory(this.idEdit);
+      }
+    },
+    editCategory: function editCategory(id) {
+      var _this2 = this;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().put('/api/auth/updateCategory/' + id, {
+        name: this.name,
+        description: this.description
+      }).then(function (response) {
+        _this2.$router.push('/category');
+      })["catch"](function (error) {
+        console.error('Edit failed:', error);
+      });
     },
     createCategory: function createCategory() {
-      var _this = this;
+      var _this3 = this;
       var formData = new FormData();
       formData.append('name', this.name);
       formData.append('description', this.description);
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('/api/auth/createCategory', formData).then(function (response) {
-        alert('Thanh cong!!!'), _this.$router.push('/category');
+        _this3.$router.push('/category');
       })["catch"](function (error) {
         console.error('Create failed:', error);
       });
     }
   },
-  mounted: function mounted() {
-    // this.load()
-  },
+  mounted: function mounted() {},
   created: function created() {
-    // this.load()
+    this.idEdit = this.$store.state.id;
+    if (this.idEdit != 0) {
+      this.findCategory(this.idEdit);
+    }
   }
 });
 
@@ -19809,7 +19835,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.mjs");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.mjs");
+/* harmony import */ var vue3_eventbus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue3-eventbus */ "./node_modules/vue3-eventbus/src/index.js");
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -19824,19 +19852,23 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/auth/listCategory").then(function (_ref) {
         var data = _ref.data;
         _this.categories = data.data;
-        console.log(_this.categories);
+        //  console.log(this.categories)
       });
+    },
+    addEditCategory: function addEditCategory(param) {
+      this.$store.commit('changeId', param);
+      this.$router.push('/addCategory');
     }
   },
   mounted: function mounted() {
-    this.load();
+    // this.load();
   },
   created: function created() {
     this.load();
   },
   components: {
-    RouterLink: vue_router__WEBPACK_IMPORTED_MODULE_1__.RouterLink,
-    RouterView: vue_router__WEBPACK_IMPORTED_MODULE_1__.RouterView
+    RouterLink: vue_router__WEBPACK_IMPORTED_MODULE_2__.RouterLink,
+    RouterView: vue_router__WEBPACK_IMPORTED_MODULE_2__.RouterView
   }
 });
 
@@ -19887,9 +19919,6 @@ var _useEventsBus = (0,_event_eventBus__WEBPACK_IMPORTED_MODULE_2__["default"])(
     },
     addEditVideo: function addEditVideo(param) {
       this.$store.commit('changeId', param);
-      // emi  1t('sidebarCollapsed',id)
-      // // this.id = ''
-      // console.log('home')
       this.$router.push('/uploadFile');
     }
   },
@@ -20326,11 +20355,10 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 }, "Submit")], -1 /* HOISTED */);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [!_ctx.success ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", {
-    key: 0,
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     autocomplete: "off",
-    onSubmit: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.createCategory && $options.createCategory.apply($options, arguments);
+    onSubmit: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+      return $options.addEditCategory();
     }, ["prevent"])),
     method: "post"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, _hoisted_4, _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -20349,7 +20377,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     placeholder: "Description",
     name: "description",
     required: ""
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.description]]), _hoisted_7])], 32 /* HYDRATE_EVENTS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.description]]), _hoisted_7])], 32 /* HYDRATE_EVENTS */)])]);
 }
 
 /***/ }),
@@ -20371,14 +20399,9 @@ var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 var _hoisted_2 = {
   "class": "but"
 };
-var _hoisted_3 = {
-  "class": "addbut",
-  style: {
-    "--clr": "#39FF14"
-  }
-};
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Add category ");
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, null, -1 /* HOISTED */);
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, " Add category ", -1 /* HOISTED */);
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, null, -1 /* HOISTED */);
+var _hoisted_5 = [_hoisted_3, _hoisted_4];
 var _hoisted_6 = {
   "class": "container"
 };
@@ -20389,22 +20412,28 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   scope: "col"
 }, "Name"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col"
-}, "Description")])], -1 /* HOISTED */);
+}, "Description"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  scope: "col"
+}, "Action")])], -1 /* HOISTED */);
 var _hoisted_8 = {
   scope: "row"
 };
+var _hoisted_9 = ["onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
-    "class": "link",
-    to: "/addCategory"
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_4];
-    }),
-    _: 1 /* STABLE */
-  })]), _hoisted_5])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.categories, function (item, index) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.description), 1 /* TEXT */)]);
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "addbut",
+    style: {
+      "--clr": "#39FF14"
+    },
+    onClick: _cache[0] || (_cache[0] = function ($event) {
+      return $options.addEditCategory(0);
+    })
+  }, _hoisted_5)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.categories, function (item, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.description), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      onClick: function onClick($event) {
+        return $options.addEditCategory(item.id);
+      }
+    }, " Edit ", 8 /* PROPS */, _hoisted_9)])]);
   }), 256 /* UNKEYED_FRAGMENT */))])])])], 64 /* STABLE_FRAGMENT */);
 }
 

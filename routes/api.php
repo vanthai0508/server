@@ -25,15 +25,26 @@ Route::group([
       'middleware' => 'auth:api'
     ], function() {
         Route::get('listUser', 'App\Http\Controllers\UserController@list');
+
         Route::get('me/logout', 'App\Http\Controllers\AuthController@logout');
+
         Route::post('upload-file', 'App\Http\Controllers\VideoController@uploadVideo');
+
         Route::get('listVideo', 'App\Http\Controllers\VideoController@list');
+
         Route::post('createCategory', 'App\Http\Controllers\CategoryController@create');
+
         Route::get('listCategory', 'App\Http\Controllers\CategoryController@list');
 
         Route::get('findVideo/{id}', 'App\Http\Controllers\VideoController@find');
 
         Route::post('updateVideo/{id}', 'App\Http\Controllers\VideoController@update');
+
+        Route::get('findCategory/{id}', 'App\Http\Controllers\CategoryController@find');
+
+        Route::put('updateCategory/{id}', 'App\Http\Controllers\CategoryController@update');
+
+        
     });
 });
 

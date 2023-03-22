@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 
@@ -24,5 +25,15 @@ class CategoryController extends BaseController
     {
 
         return $this->sendResponse($this->categoryService->list(), "List category");
+    }
+
+    public function find($id)
+    {
+        return $this->sendResponse($this->categoryService->find($id), "Category");
+    }
+
+    public function update($id, CategoryRequest $request)
+    {
+        return $this->sendResponse($this->categoryService->update($id, $request->all()), "Updated category");
     }
 }
