@@ -1,10 +1,9 @@
 <template>
     <h1>This is home page </h1>
     <div class="but">
-        <button class="addbut" style="--clr:#39FF14"><span>
-            <router-link class="link" to="/uploadFile">
-                Add video
-            </router-link>
+        <button class="addbut" style="--clr:#39FF14" @click="addEditVideo(0)"><span>
+          Add video
+            
         </span><i></i></button>
     </div>   
     <div>
@@ -42,33 +41,42 @@
 import axios from 'axios';
 import { RouterLink, RouterView } from 'vue-router';
 import eventBus from 'vue3-eventbus';
+import useEventsBus from '../event/eventBus';
+
+const {emit}=useEventsBus()
 
 
  export default {
     data() {
       return {
          videos: {},
-         id: ''
+        //  id: ''
       }
     },
     methods: {
         load() {
             axios.get("/api/auth/listVideo").then(({ data }) => {
                this.videos = data.data
+
+              //  this.$store.state.count = 4
+                
+              //   this.$store.commit('changeId', 8)
+              //  console.log(this.$store.state.count)
             })
         },
-        addEditVideo(id) {
-          console.log('id', id)
-          eventBus.emit('inputData', { id })
-          // this.id = ''
-          console.log('home')
+        addEditVideo(param) {
+          this.$store.commit('changeId', param)
+          // emi  1t('sidebarCollapsed',id)
+          // // this.id = ''
+          // console.log('home')
           this.$router.push('/uploadFile')
         }
     },
     mounted() {
-        this.load();
+        // this.load();
     },
     created() {
+        
         this.load();
     },
     components: { RouterLink, RouterView }

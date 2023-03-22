@@ -6,17 +6,18 @@
             <form autocomplete="off" @submit.prevent="uploadFile"  method="post" >
                 <div class="containerss">
                     <h1>Form upload file</h1>
-                    <h1>{{ this.idEdit }}</h1>
                     <hr>
                     <label>
                         Title:
-                        <input type="text" v-model="title">
+                        <input type="text" v-model="title" >
                     </label>
                     <label>
                         Video file:
                         <input type="file" @change="selectFile">
                     </label><br><br>
-                   
+                    <video width="320" height="240" :src="path" controls>
+                    </video>
+               <!-- <h1>{{ this.path }}</h1> -->
 
                     <div class="selectcategory">
                             Category selected :
@@ -49,6 +50,9 @@
     import axios from 'axios'
     import eventBus from 'vue3-eventbus'
 
+    import useEventsBus from '../event/eventBus';
+    const { bus } = useEventsBus()
+
     // import Multiselect from 'vue-multiselect'
     export default {
         data(){
@@ -56,7 +60,7 @@
                 categories: {},
                 title: '',
                 selectedFile: null,
-                categories: [],
+                path: '',
                 categorySelected: '',
                 idEdit: ''
             } 
@@ -65,11 +69,20 @@
             load(){
                 this.getListCategory()
             },
-            // change(){
-            //     console.log('test', this.language[0].name)
-            // },
             selectFile(event) {
                 this.selectedFile = event.target.files[0];
+            },
+            findVideo(id){
+                axios.get('/api/auth/findVideo/'+id)
+                    .then(response => {
+                        this.title = response.data.data.title
+                        this.path = 'storage/' + response.data.data.path
+                        this.categorySelected = response.data.data.category
+                        this.getListCategory()
+                    })
+                    .catch(error => {
+                        console.error('Find video failed:', error)
+                    })
             },
             uploadFile(){
                 if(this.categorySelected.length != 0){
@@ -92,26 +105,29 @@
                         console.error('Upload failed:', error)
                     })
                 } else {
-                    const listId = null
+                    console.log('error')
                 }
-            
-                
-                // console.log(formData)
-                
             },
             getListCategory(){
                 axios.get("/api/auth/listCategory").then(({ data }) => {
-                this.categories = data.data
-                // console.log(this.categories)
-            })
+                    this.categories = data.data
+                    // console.log(this.categories)
+                })
             }
         },
         created() {
+            // this.load()
+
+            console.log('thai', this.$store.state.id)
+            if(this.$store.state.id == 0 ){
+                this.idEdit = 0
+                this.load()
+            } else  {
+                this.idEdit = this.$store.state.id
+                this.findVideo(this.idEdit)
+            }
             
-            eventBus.on('inputData', (payload) => {
-                console.log('Received event cr:', payload);
-            })
-            this.load()
+
         },
         
         mounted() {
@@ -120,7 +136,7 @@
             // });
         },
         beforeUnmount() {
-            eventBus.off('inputData');
+            
         },
     }
 </script>

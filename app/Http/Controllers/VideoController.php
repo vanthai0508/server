@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\VideoRequest;
+use App\Http\Resources\VideoResource;
 use App\Models\Video;
 use App\Services\VideoService;
 use Illuminate\Http\Request;
@@ -24,5 +25,10 @@ class VideoController extends BaseController
     public function list()
     {
         return $this->sendResponse($this->videoService->list(), "List video");
+    }
+
+    public function find($id)
+    {
+        return $this->sendResponse(new VideoResource($this->videoService->find($id)) , "Video");
     }
 }

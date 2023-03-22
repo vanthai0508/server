@@ -53,14 +53,14 @@ import Cookies from 'js-cookie';
                   setAccessToken(data.success.token),
                   window.axios.defaults.headers.common['Authorization'] =
                   'Bearer ' + data.success.token,
-                  alert('Thanh cong!!!')
+                  // alert('Thanh cong!!!')
                   this.$router.push('/house')
                 },
               );
             }
     },
     mounted() {
-      this.load()
+      // this.load()
     },
     created() {
       this.load()

@@ -1,45 +1,21 @@
 <!-- <template>
-  <center>
-    <h1 style="text-align: center; 
-        color: green">GeeksforGeeks</h1>
-    <strong>
-        Vue.js Form Input Binding with Select option
-    </strong>
-    <br />
-  </center>
-  <center>
-    <div>
-      Data Structure : {{ category }}
-      <br />
-      <select v-model="category">
-        <option value="Array">Array</option>
-        <option value="Queue">Queue</option>
-        <option value="Priority Queue">Priority Queue</option>
-        <option value="Linked List">Linked List</option>
-      </select>
-    </div>
-    <br />
-    <div>
-      Programming Language : {{ language }}
-      <br />
-      <select v-model="language" multiple>
-        <option value="Java">Java</option>
-        <option value="C++">C++</option>
-        <option value="Python">Python</option>
-        <option value="Javascript">Javascript</option>
-      </select>
-    </div>
-    <br />
-  </center>
+  <div>
+    <video :src="videoSrc" controls></video>
+    <button @click="changeVideoSrc">Change video</button>
+  </div>
 </template>
-<script>
 
+<script>
 export default {
   data() {
     return {
-      category: '',
-      language: '',
-    }
+      videoSrc: 'storage/videos/CHẮC VÌ MÌNH CHƯA TỐT (Ai Đợi Mình Được Mãi P2) ｜ THANH HƯNG ｜ OFFICIAL MV.mp4',
+    };
   },
-}
+  methods: {
+    changeVideoSrc() {
+      this.videoSrc = 'storage/videos/Gió - JanK x KProx「Lo - Fi Ver」⧸ Official Lyric Video.mp4';
+    },
+  },
+};
 </script> -->

@@ -30,6 +30,8 @@ Route::group([
         Route::get('listVideo', 'App\Http\Controllers\VideoController@list');
         Route::post('createCategory', 'App\Http\Controllers\CategoryController@create');
         Route::get('listCategory', 'App\Http\Controllers\CategoryController@list');
+
+        Route::get('findVideo/{id}', 'App\Http\Controllers\VideoController@find');
     });
 });
 

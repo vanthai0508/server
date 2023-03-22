@@ -47,4 +47,14 @@ class VideoService
             return null;
         }
     }
+
+    public function find($id)
+    {
+        try {
+            return $this->video->find($id);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return null;
+        }
+    }
 }
