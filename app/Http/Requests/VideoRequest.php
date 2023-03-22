@@ -26,7 +26,7 @@ class VideoRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'video' => 'required|file|mimetypes:video/mp4',
+            'video' => 'file|mimetypes:video/mp4',
             'category' => 'array',
             'category.*' => 'integer|exists:category,id'
         ];

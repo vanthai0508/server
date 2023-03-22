@@ -57,4 +57,36 @@ class VideoService
             return null;
         }
     }
+
+    public function update(int $id,array $request)
+    {
+        try {
+            $videoResult = $this->video->find($id);
+            if(isset($request['video'])){
+                $fileName = $request['video']->getClientOriginalName();
+                $filePath = 'videos/' . $fileName;
+ 
+                $isFileUploaded = Storage::disk('public')->put($filePath, file_get_contents($request['video']));
+ 
+                // File URL to access the video in frontend
+                // $url = Storage::disk('public')->url($filePath);
+ 
+                if ($isFileUploaded) {
+                    $video['title'] = $request['title'];
+                    $video['path'] = $filePath;
+                    $videoResult->update($video);
+                }
+                $videoResult->category()->sync($request['category']);
+                return $videoResult;
+            } else {
+                $video['title'] = $request['title'];
+                $videoResult->update($video);
+                $videoResult->category()->sync($request['category']);
+                return $videoResult;
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return null;
+        }
+    }
 }

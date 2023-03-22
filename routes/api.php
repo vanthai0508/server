@@ -32,6 +32,8 @@ Route::group([
         Route::get('listCategory', 'App\Http\Controllers\CategoryController@list');
 
         Route::get('findVideo/{id}', 'App\Http\Controllers\VideoController@find');
+
+        Route::post('updateVideo/{id}', 'App\Http\Controllers\VideoController@update');
     });
 });
 

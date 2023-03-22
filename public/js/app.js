@@ -20148,8 +20148,34 @@ var _useEventsBus = (0,_event_eventBus__WEBPACK_IMPORTED_MODULE_3__["default"])(
         console.error('Find video failed:', error);
       });
     },
-    uploadFile: function uploadFile() {
+    editVideo: function editVideo(id) {
       var _this2 = this;
+      if (this.categorySelected.length != 0) {
+        var formData = new FormData();
+        formData.append('title', this.title);
+        console.log(this.selectedFile);
+        if (this.selectedFile != null) {
+          formData.append('video', this.selectedFile);
+        }
+        this.categorySelected.forEach(function (item, index) {
+          formData.append('category[' + index + ']', item.id);
+        });
+        axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/auth/updateVideo/' + id, formData).then(function (response) {
+          _this2.$router.push('/home');
+        })["catch"](function (error) {
+          console.error('Update failed:', error);
+        });
+      }
+    },
+    addEditVideo: function addEditVideo() {
+      if (this.idEdit == 0) {
+        this.uploadFile();
+      } else {
+        this.editVideo(this.idEdit);
+      }
+    },
+    uploadFile: function uploadFile() {
+      var _this3 = this;
       if (this.categorySelected.length != 0) {
         var listId = this.categorySelected.map(function (category) {
           return category.id;
@@ -20160,9 +20186,9 @@ var _useEventsBus = (0,_event_eventBus__WEBPACK_IMPORTED_MODULE_3__["default"])(
         this.categorySelected.forEach(function (item, index) {
           formData.append('category[' + index + ']', item.id);
         });
-        // console.log('test', formData)
         axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/auth/upload-file', formData).then(function (response) {
-          alert('Thanh cong!!!'), _this2.$router.push('/home');
+          // alert('Thanh cong!!!'),
+          _this3.$router.push('/home');
         })["catch"](function (error) {
           console.error('Upload failed:', error);
         });
@@ -20171,18 +20197,14 @@ var _useEventsBus = (0,_event_eventBus__WEBPACK_IMPORTED_MODULE_3__["default"])(
       }
     },
     getListCategory: function getListCategory() {
-      var _this3 = this;
+      var _this4 = this;
       axios__WEBPACK_IMPORTED_MODULE_1___default().get("/api/auth/listCategory").then(function (_ref) {
         var data = _ref.data;
-        _this3.categories = data.data;
-        // console.log(this.categories)
+        _this4.categories = data.data;
       });
     }
   },
   created: function created() {
-    // this.load()
-
-    console.log('thai', this.$store.state.id);
     if (this.$store.state.id == 0) {
       this.idEdit = 0;
       this.load();
@@ -20191,11 +20213,7 @@ var _useEventsBus = (0,_event_eventBus__WEBPACK_IMPORTED_MODULE_3__["default"])(
       this.findVideo(this.idEdit);
     }
   },
-  mounted: function mounted() {
-    // eventBus.on('inputData', (payload) => {
-    //     console.log('Received event:', payload.id);
-    // });
-  },
+  mounted: function mounted() {},
   beforeUnmount: function beforeUnmount() {}
 });
 
@@ -20786,7 +20804,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     autocomplete: "off",
     onSubmit: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.uploadFile && $options.uploadFile.apply($options, arguments);
+      return $options.addEditVideo && $options.addEditVideo.apply($options, arguments);
     }, ["prevent"])),
     method: "post"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {

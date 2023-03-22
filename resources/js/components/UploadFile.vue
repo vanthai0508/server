@@ -3,7 +3,7 @@
 <template>
     <div>
         <div class="upload">
-            <form autocomplete="off" @submit.prevent="uploadFile"  method="post" >
+            <form autocomplete="off" @submit.prevent="addEditVideo"  method="post" >
                 <div class="containerss">
                     <h1>Form upload file</h1>
                     <hr>
@@ -84,6 +84,37 @@
                         console.error('Find video failed:', error)
                     })
             },
+            editVideo(id)
+            {
+                if(this.categorySelected.length != 0){
+                    const formData = new FormData();
+                    formData.append('title', this.title);
+                    console.log(this.selectedFile)
+                    if(this.selectedFile != null){
+                        formData.append('video', this.selectedFile)
+                    }
+                    this.categorySelected.forEach((item, index) => {
+                        formData.append('category['+index+']', item.id);
+                    });
+
+                    axios.post('/api/auth/updateVideo/' + id, formData)
+                    .then(response => {
+                        this.$router.push('/home')
+                    })
+                    .catch(error => {
+                        console.error('Update failed:', error)
+                    })
+                    
+                }
+            },
+            addEditVideo()
+            {
+                if(this.idEdit == 0) {
+                    this.uploadFile()
+                } else {
+                    this.editVideo(this.idEdit)
+                }
+            },
             uploadFile(){
                 if(this.categorySelected.length != 0){
                     
@@ -95,10 +126,9 @@
                     this.categorySelected.forEach((item, index) => {
                         formData.append('category['+index+']', item.id);
                     });
-                    // console.log('test', formData)
                     axios.post('/api/auth/upload-file', formData)
                     .then(response => {
-                        alert('Thanh cong!!!'),
+                        // alert('Thanh cong!!!'),
                         this.$router.push('/home')
                     })
                     .catch(error => {
@@ -111,14 +141,10 @@
             getListCategory(){
                 axios.get("/api/auth/listCategory").then(({ data }) => {
                     this.categories = data.data
-                    // console.log(this.categories)
                 })
             }
         },
         created() {
-            // this.load()
-
-            console.log('thai', this.$store.state.id)
             if(this.$store.state.id == 0 ){
                 this.idEdit = 0
                 this.load()
@@ -131,9 +157,6 @@
         },
         
         mounted() {
-            // eventBus.on('inputData', (payload) => {
-            //     console.log('Received event:', payload.id);
-            // });
         },
         beforeUnmount() {
             
