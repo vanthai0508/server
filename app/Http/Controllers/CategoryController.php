@@ -15,7 +15,7 @@ class CategoryController extends BaseController
         $this->categoryService = $categoryService;
     }
 
-    public function create(Request $request)
+    public function create(CategoryRequest $request)
     {
 
         return $this->sendResponse($this->categoryService->create($request), "Created");

@@ -8,9 +8,9 @@
                     <h1>Form create category</h1>
                     <hr>
                     <label for="Name"><b>Name</b></label>
-                    <input type="text" v-model="name" placeholder="Name" name="name" required>
+                    <input type="text" v-model="name" placeholder="Name" name="name" >
                     <label for="Description"><b>Description</b></label>
-                    <input type="text" v-model="description" placeholder="Description" name="description" required>
+                    <input type="text" v-model="description" placeholder="Description" name="description" >
                    
                     <div class="clearfix">
                         <button type="submit" class="signupbtn">Submit</button>
@@ -33,6 +33,8 @@
         },
         methods: {
             load(){
+                this.name = '',
+                this.description = ''
             },
             findCategory(id){
                 axios.get('/api/auth/category/findCategory/' + id)
@@ -57,10 +59,18 @@
                     description: this.description
                 })
                 .then(response => {
+                    Toast.fire({
+                        icon: 'success',
+                        title: response.data.message
+                    });
                     this.$router.push('/category')
                 })
                 .catch(error => {
-                    console.error('Edit failed:', error)
+                    Toast.fire({
+                        icon: 'error',
+                        title: "Some error occured! Please try again"
+                    });
+                    this.findCategory(this.idEdit)
                 })
             },
             createCategory(){
@@ -69,10 +79,19 @@
                 formData.append('description', this.description);
                 axios.post('/api/auth/category/createCategory', formData)
                 .then(response => {
+                    Toast.fire({
+                        icon: 'success',
+                        title: response.data.message
+                    });
                     this.$router.push('/category')
                 })
                 .catch(error => {
-                    console.error('Create failed:', error)
+                    Toast.fire({
+                        icon: 'error',
+                        title: "Some error occured! Please try again"
+                    });
+                    // this.$router.push('/category')
+                    this.load()
                 })
             },
         },

@@ -67,8 +67,12 @@ const {emit}=useEventsBus()
           this.$router.push('/uploadFile')
         },
         deleteVideo(id){
-          axios.delete("/api/auth/video/deleteVideo/"+id).then(({data}) => {
-          this.load()
+          axios.delete("/api/auth/video/deleteVideo/"+id).then( response => {
+            Toast.fire({
+              icon: 'success',
+              title: response.data.message
+            });
+            this.load()
           })
         }
     },

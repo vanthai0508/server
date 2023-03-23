@@ -58,8 +58,18 @@ import EventBus from 'vue3-eventbus'
           this.$router.push('/addCategory')
         },
         deleteCategory(id){
-          axios.delete("/api/auth/category/deleteCategory/" + id).then(({data}) => {
+          axios.delete("/api/auth/category/deleteCategory/" + id).then( response  => {
+            Toast.fire({
+                        icon: 'success',
+                        title: response.data.message
+                    });
             this.load()
+          })
+          .catch(error => {
+            Toast.fire({
+                        icon: 'error',
+                        // title: response.data.message
+                    });
           })
         }
     },

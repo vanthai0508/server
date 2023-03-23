@@ -98,12 +98,25 @@
 
                     axios.post('/api/auth/video/updateVideo/' + id, formData)
                     .then(response => {
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.data.message
+                        });
                         this.$router.push('/home')
                     })
                     .catch(error => {
-                        console.error('Update failed:', error)
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Some error occured! Please try again'
+                        });
                     })
                     
+                }
+                else {
+                    Toast.fire({
+                            icon: 'error',
+                            title: 'Please try again with input category !!'
+                        });
                 }
             },
             addEditVideo()
@@ -127,14 +140,23 @@
                     });
                     axios.post('/api/auth/video/upload-file', formData)
                     .then(response => {
-                        // alert('Thanh cong!!!'),
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.data.message
+                        });
                         this.$router.push('/home')
                     })
                     .catch(error => {
-                        console.error('Upload failed:', error)
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Some error occured! Please try again'
+                        });
                     })
                 } else {
-                    console.log('error')
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Some error occured! Please try again with input category !!'
+                    });
                 }
             },
             getListCategory(){
