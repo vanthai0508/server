@@ -89,4 +89,18 @@ class VideoService
             return null;
         }
     }
+
+    public function delete($id)
+    {
+        try {
+            $videoDelete = $this->video->with(['category'])->find($id);
+            $videoDelete->category()->detach();
+            $videoDelete->delete();
+            return $videoDelete;
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return null;
+        }
+    }
 }

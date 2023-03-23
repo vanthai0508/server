@@ -35,7 +35,7 @@
             load(){
             },
             findCategory(id){
-                axios.get('/api/auth/findCategory/' + id)
+                axios.get('/api/auth/category/findCategory/' + id)
                 .then(response => {
                     this.name = response.data.data.name,
                     this.description = response.data.data.description
@@ -52,7 +52,7 @@
                 }
             },
             editCategory(id){
-                axios.put('/api/auth/updateCategory/' + id, {
+                axios.put('/api/auth/category/updateCategory/' + id, {
                     name: this.name,
                     description: this.description
                 })
@@ -67,7 +67,7 @@
                 const formData = new FormData();
                 formData.append('name', this.name);
                 formData.append('description', this.description);
-                axios.post('/api/auth/createCategory', formData)
+                axios.post('/api/auth/category/createCategory', formData)
                 .then(response => {
                     this.$router.push('/category')
                 })

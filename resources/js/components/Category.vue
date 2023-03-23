@@ -20,9 +20,14 @@
                     <th scope="row">{{ index + 1 }}</th>
                     <td>{{ item.name }}</td>
                     <td>{{ item.description }}</td>
-                    <td><button @click="addEditCategory(item.id)">
-                      Edit
-                    </button></td>
+                    <td>
+                      <button class="butAction" @click="addEditCategory(item.id)">
+                        Edit
+                      </button><br>
+                      <button class="butAction" @click="deleteCategory(item.id)">
+                        Delete
+                      </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -44,14 +49,18 @@ import EventBus from 'vue3-eventbus'
     },
     methods: {
         load() {
-            axios.get("/api/auth/listCategory").then(({ data }) => {
-               this.categories = data.data
-              //  console.log(this.categories)
-            })
+          axios.get("/api/auth/category/listCategory").then(({ data }) => {
+            this.categories = data.data
+          })
         },
         addEditCategory(param){
           this.$store.commit('changeId', param)
           this.$router.push('/addCategory')
+        },
+        deleteCategory(id){
+          axios.delete("/api/auth/category/deleteCategory/" + id).then(({data}) => {
+            this.load()
+          })
         }
     },
     mounted() {
@@ -116,6 +125,16 @@ h2 a {
     padding-right: 10%;
 }
 
+.butAction {
+  width: 100px;
+  border: 5px solid rgb(13, 97, 69);
+  background-color: rgb(66, 134, 87);
+  color: black;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
 .container td {
     font-weight: normal;
     font-size: 1em;

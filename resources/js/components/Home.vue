@@ -26,8 +26,11 @@
                </video>
             </td>
             <td>
-              <button @click="addEditVideo(item.id)">
+              <button class="butAction" @click="addEditVideo(item.id)">
                 Edit
+              </button><br>
+              <button class="butAction" @click="deleteVideo(item.id)">
+                Delete
               </button>
             </td>
           </tr>
@@ -55,18 +58,18 @@ const {emit}=useEventsBus()
     },
     methods: {
         load() {
-            axios.get("/api/auth/listVideo").then(({ data }) => {
-               this.videos = data.data
-
-              //  this.$store.state.count = 4
-                
-              //   this.$store.commit('changeId', 8)
-              //  console.log(this.$store.state.count)
-            })
+          axios.get("/api/auth/video/listVideo").then(({ data }) => {
+            this.videos = data.data
+          })
         },
         addEditVideo(param) {
           this.$store.commit('changeId', param)
           this.$router.push('/uploadFile')
+        },
+        deleteVideo(id){
+          axios.delete("/api/auth/video/deleteVideo/"+id).then(({data}) => {
+          this.load()
+          })
         }
     },
     mounted() {

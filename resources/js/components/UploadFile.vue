@@ -73,7 +73,7 @@
                 this.selectedFile = event.target.files[0];
             },
             findVideo(id){
-                axios.get('/api/auth/findVideo/'+id)
+                axios.get('/api/auth/video/findVideo/'+id)
                     .then(response => {
                         this.title = response.data.data.title
                         this.path = 'storage/' + response.data.data.path
@@ -89,7 +89,6 @@
                 if(this.categorySelected.length != 0){
                     const formData = new FormData();
                     formData.append('title', this.title);
-                    console.log(this.selectedFile)
                     if(this.selectedFile != null){
                         formData.append('video', this.selectedFile)
                     }
@@ -97,7 +96,7 @@
                         formData.append('category['+index+']', item.id);
                     });
 
-                    axios.post('/api/auth/updateVideo/' + id, formData)
+                    axios.post('/api/auth/video/updateVideo/' + id, formData)
                     .then(response => {
                         this.$router.push('/home')
                     })
@@ -126,7 +125,7 @@
                     this.categorySelected.forEach((item, index) => {
                         formData.append('category['+index+']', item.id);
                     });
-                    axios.post('/api/auth/upload-file', formData)
+                    axios.post('/api/auth/video/upload-file', formData)
                     .then(response => {
                         // alert('Thanh cong!!!'),
                         this.$router.push('/home')
@@ -139,7 +138,7 @@
                 }
             },
             getListCategory(){
-                axios.get("/api/auth/listCategory").then(({ data }) => {
+                axios.get("/api/auth/category/listCategory").then(({ data }) => {
                     this.categories = data.data
                 })
             }

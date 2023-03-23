@@ -36,4 +36,9 @@ class CategoryController extends BaseController
     {
         return $this->sendResponse($this->categoryService->update($id, $request->all()), "Updated category");
     }
+
+    public function delete($id)
+    {
+        return $this->sendResponse($this->categoryService->delete($id), "Deleted");
+    }
 }

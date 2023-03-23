@@ -59,4 +59,17 @@ class CategoryService
             return null;
         }
     }
+
+    public function delete($id)
+    {
+        try {
+            $categoryDelete = $this->find($id);
+            $categoryDelete->videos()->detach();
+            $categoryDelete->delete();
+            return $categoryDelete;
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return null;
+        }
+    }
 }

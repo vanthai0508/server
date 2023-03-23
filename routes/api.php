@@ -24,25 +24,38 @@ Route::group([
     Route::group([
       'middleware' => 'auth:api'
     ], function() {
+
+        Route::prefix('video')->group(function () {
+            Route::get('listVideo', 'App\Http\Controllers\VideoController@list');
+
+            Route::get('findVideo/{id}', 'App\Http\Controllers\VideoController@find');
+
+            Route::post('upload-file', 'App\Http\Controllers\VideoController@uploadVideo');
+
+            Route::post('updateVideo/{id}', 'App\Http\Controllers\VideoController@update');
+
+            Route::delete('deleteVideo/{id}', 'App\Http\Controllers\VideoController@delete');
+
+        });
+        
+        Route::prefix('category')->group(function () {
+
+            Route::post('createCategory', 'App\Http\Controllers\CategoryController@create');
+
+            Route::get('listCategory', 'App\Http\Controllers\CategoryController@list');
+
+            Route::get('findCategory/{id}', 'App\Http\Controllers\CategoryController@find');
+
+            Route::put('updateCategory/{id}', 'App\Http\Controllers\CategoryController@update');
+
+            Route::delete('deleteCategory/{id}', 'App\Http\Controllers\CategoryController@delete');
+            
+        });
+        
+
         Route::get('listUser', 'App\Http\Controllers\UserController@list');
 
         Route::get('me/logout', 'App\Http\Controllers\AuthController@logout');
-
-        Route::post('upload-file', 'App\Http\Controllers\VideoController@uploadVideo');
-
-        Route::get('listVideo', 'App\Http\Controllers\VideoController@list');
-
-        Route::post('createCategory', 'App\Http\Controllers\CategoryController@create');
-
-        Route::get('listCategory', 'App\Http\Controllers\CategoryController@list');
-
-        Route::get('findVideo/{id}', 'App\Http\Controllers\VideoController@find');
-
-        Route::post('updateVideo/{id}', 'App\Http\Controllers\VideoController@update');
-
-        Route::get('findCategory/{id}', 'App\Http\Controllers\CategoryController@find');
-
-        Route::put('updateCategory/{id}', 'App\Http\Controllers\CategoryController@update');
 
         
     });

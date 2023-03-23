@@ -19775,7 +19775,7 @@ __webpack_require__.r(__webpack_exports__);
     load: function load() {},
     findCategory: function findCategory(id) {
       var _this = this;
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/auth/findCategory/' + id).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/auth/category/findCategory/' + id).then(function (response) {
         _this.name = response.data.data.name, _this.description = response.data.data.description;
       })["catch"](function (error) {
         console.error('Create failed:', error);
@@ -19790,7 +19790,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     editCategory: function editCategory(id) {
       var _this2 = this;
-      axios__WEBPACK_IMPORTED_MODULE_0___default().put('/api/auth/updateCategory/' + id, {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().put('/api/auth/category/updateCategory/' + id, {
         name: this.name,
         description: this.description
       }).then(function (response) {
@@ -19804,7 +19804,7 @@ __webpack_require__.r(__webpack_exports__);
       var formData = new FormData();
       formData.append('name', this.name);
       formData.append('description', this.description);
-      axios__WEBPACK_IMPORTED_MODULE_0___default().post('/api/auth/createCategory', formData).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post('/api/auth/category/createCategory', formData).then(function (response) {
         _this3.$router.push('/category');
       })["catch"](function (error) {
         console.error('Create failed:', error);
@@ -19849,15 +19849,21 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     load: function load() {
       var _this = this;
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/auth/listCategory").then(function (_ref) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/auth/category/listCategory").then(function (_ref) {
         var data = _ref.data;
         _this.categories = data.data;
-        //  console.log(this.categories)
       });
     },
     addEditCategory: function addEditCategory(param) {
       this.$store.commit('changeId', param);
       this.$router.push('/addCategory');
+    },
+    deleteCategory: function deleteCategory(id) {
+      var _this2 = this;
+      axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"]("/api/auth/category/deleteCategory/" + id).then(function (_ref2) {
+        var data = _ref2.data;
+        _this2.load();
+      });
     }
   },
   mounted: function mounted() {
@@ -19907,19 +19913,21 @@ var _useEventsBus = (0,_event_eventBus__WEBPACK_IMPORTED_MODULE_2__["default"])(
   methods: {
     load: function load() {
       var _this = this;
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/auth/listVideo").then(function (_ref) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/auth/video/listVideo").then(function (_ref) {
         var data = _ref.data;
         _this.videos = data.data;
-
-        //  this.$store.state.count = 4
-
-        //   this.$store.commit('changeId', 8)
-        //  console.log(this.$store.state.count)
       });
     },
     addEditVideo: function addEditVideo(param) {
       this.$store.commit('changeId', param);
       this.$router.push('/uploadFile');
+    },
+    deleteVideo: function deleteVideo(id) {
+      var _this2 = this;
+      axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"]("/api/auth/video/deleteVideo/" + id).then(function (_ref2) {
+        var data = _ref2.data;
+        _this2.load();
+      });
     }
   },
   mounted: function mounted() {
@@ -20168,7 +20176,7 @@ var _useEventsBus = (0,_event_eventBus__WEBPACK_IMPORTED_MODULE_3__["default"])(
     },
     findVideo: function findVideo(id) {
       var _this = this;
-      axios__WEBPACK_IMPORTED_MODULE_1___default().get('/api/auth/findVideo/' + id).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get('/api/auth/video/findVideo/' + id).then(function (response) {
         _this.title = response.data.data.title;
         _this.path = 'storage/' + response.data.data.path;
         _this.categorySelected = response.data.data.category;
@@ -20182,14 +20190,13 @@ var _useEventsBus = (0,_event_eventBus__WEBPACK_IMPORTED_MODULE_3__["default"])(
       if (this.categorySelected.length != 0) {
         var formData = new FormData();
         formData.append('title', this.title);
-        console.log(this.selectedFile);
         if (this.selectedFile != null) {
           formData.append('video', this.selectedFile);
         }
         this.categorySelected.forEach(function (item, index) {
           formData.append('category[' + index + ']', item.id);
         });
-        axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/auth/updateVideo/' + id, formData).then(function (response) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/auth/video/updateVideo/' + id, formData).then(function (response) {
           _this2.$router.push('/home');
         })["catch"](function (error) {
           console.error('Update failed:', error);
@@ -20215,7 +20222,7 @@ var _useEventsBus = (0,_event_eventBus__WEBPACK_IMPORTED_MODULE_3__["default"])(
         this.categorySelected.forEach(function (item, index) {
           formData.append('category[' + index + ']', item.id);
         });
-        axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/auth/upload-file', formData).then(function (response) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/auth/video/upload-file', formData).then(function (response) {
           // alert('Thanh cong!!!'),
           _this3.$router.push('/home');
         })["catch"](function (error) {
@@ -20227,7 +20234,7 @@ var _useEventsBus = (0,_event_eventBus__WEBPACK_IMPORTED_MODULE_3__["default"])(
     },
     getListCategory: function getListCategory() {
       var _this4 = this;
-      axios__WEBPACK_IMPORTED_MODULE_1___default().get("/api/auth/listCategory").then(function (_ref) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get("/api/auth/category/listCategory").then(function (_ref) {
         var data = _ref.data;
         _this4.categories = data.data;
       });
@@ -20419,6 +20426,8 @@ var _hoisted_8 = {
   scope: "row"
 };
 var _hoisted_9 = ["onClick"];
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_11 = ["onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "addbut",
@@ -20430,10 +20439,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, _hoisted_5)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.categories, function (item, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.description), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      "class": "butAction",
       onClick: function onClick($event) {
         return $options.addEditCategory(item.id);
       }
-    }, " Edit ", 8 /* PROPS */, _hoisted_9)])]);
+    }, " Edit ", 8 /* PROPS */, _hoisted_9), _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      "class": "butAction",
+      onClick: function onClick($event) {
+        return $options.deleteCategory(item.id);
+      }
+    }, " Delete ", 8 /* PROPS */, _hoisted_11)])]);
   }), 256 /* UNKEYED_FRAGMENT */))])])])], 64 /* STABLE_FRAGMENT */);
 }
 
@@ -20482,6 +20497,8 @@ var _hoisted_9 = {
 };
 var _hoisted_10 = ["src"];
 var _hoisted_11 = ["onClick"];
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_13 = ["onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "addbut",
@@ -20496,10 +20513,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       src: 'storage/' + item.path,
       type: "video/mp4"
     }, null, 8 /* PROPS */, _hoisted_10)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      "class": "butAction",
       onClick: function onClick($event) {
         return $options.addEditVideo(item.id);
       }
-    }, " Edit ", 8 /* PROPS */, _hoisted_11)])]);
+    }, " Edit ", 8 /* PROPS */, _hoisted_11), _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      "class": "butAction",
+      onClick: function onClick($event) {
+        return $options.deleteVideo(item.id);
+      }
+    }, " Delete ", 8 /* PROPS */, _hoisted_13)])]);
   }), 256 /* UNKEYED_FRAGMENT */))])])])], 64 /* STABLE_FRAGMENT */);
 }
 
@@ -21218,7 +21241,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n@charset \"UTF-8\";\nbody {\n  font-family: 'Open Sans', sans-serif;\n  font-weight: 300;\n  line-height: 1.42em;\n  color:#fbf9fd;\n  \n  background-color:#f8f9fa;\n}\nh1 {\n  font-size:3em; \n  font-weight: 300;\n  line-height:1em;\n  text-align: center;\n  color: #4DC3FA;\n}\nh2 {\n  font-size:1em; \n  font-weight: 300;\n  text-align: center;\n  display: block;\n  line-height:1em;\n  padding-bottom: 2em;\n  color: #FB667A;\n}\nh2 a {\n  font-weight: 700;\n  text-transform: uppercase;\n  color: #FB667A;\n  text-decoration: none;\n}\n.blue { color: #185875;\n}\n.yellow { color: #FFF842;\n}\n.container th h1 {\n    font-weight: bold;\n    font-size: 1em;\n  text-align: left;\n  color: #185875;\n}\n.but {\n    text-align: right;\n    padding-right: 10%;\n}\n.container td {\n    font-weight: normal;\n    font-size: 1em;\n  box-shadow: 0 2px 2px -2px #0E1119;\n}\n.container {\n    text-align: left;\n    overflow: hidden;\n    width: 80%;\n    margin: 0 auto;\n  display: table;\n  padding: 0 0 8em 0;\n}\n.container td, .container th {\n    padding-bottom: 2%;\n    padding-top: 2%;\n  padding-left:2%;\n}\n\n/* Background-color of the odd rows */\n.container tr:nth-child(odd) {\n    background-color: #323C50;\n}\n\n/* Background-color of the even rows */\n.container tr:nth-child(even) {\n    background-color: #2C3446;\n}\n.container th {\n    background-color: #1F2739;\n    color: #9ab0c5;\n}\n.container td {\n    color: #9ab0c5;\n}\n.container td:first-child { color: #FB667A;\n}\n.container tr:hover {\n   background-color: #464A52;\nbox-shadow: 0 6px 6px -6px #0E1119;\n}\n.container td:hover {\n  background-color: #42ff97;\n  color: #403E10;\n  font-weight: bold;\n  \n  box-shadow: #7F7C21 -1px 1px, #7F7C21 -2px 2px, #7F7C21 -3px 3px, #7F7C21 -4px 4px, #7F7C21 -5px 5px, #7F7C21 -6px 6px;\n  transform: translate3d(6px, -6px, 0);\n  \n  transition-delay: 0s;\n    transition-duration: 0.4s;\n    transition-property: all;\n  transition-timing-function: line;\n}\n@media (max-width: 800px) {\n.container td:nth-child(4),\n.container th:nth-child(4) { display: none;\n}\n}\n.addbut {\n  position: relative;\n  background: #444;\n  color: #fff;\n  text-decoration: none;\n  text-transform: uppercase;\n  border: none;\n  letter-spacing: 0.1rem;\n  font-size: 1rem;\n  padding: 1rem 3rem;\n  transition: 0.2s;\n  width: 250px;\n}\n.addbut:hover {\n  letter-spacing: 0.2rem;\n  padding: 1.1rem 3.1rem;\n  background: var(--clr);\n  color: var(--clr);\n  /* box-shadow: 0 0 35px var(--clr); */\n  animation: box 3s infinite;\n}\n.addbut::before {\n  content: \"\";\n  position: absolute;\n  inset: 2px;\n  background: #272822;\n}\n.addbut span {\n  position: relative;\n  z-index: 1;\n}\n.addbut i {\n  position: absolute;\n  inset: 0;\n  display: block;\n}\n.addbut i::before {\n  content: \"\";\n  position: absolute;\n  width: 10px;\n  height: 2px;\n  left: 80%;\n  top: -2px;\n  border: 2px solid var(--clr);\n  background: #272822;\n  transition: 0.2s;\n}\n.addbut:hover i::before {\n  width: 15px;\n  left: 20%;\n  animation: move 3s infinite;\n}\n.addbut i::after {\n  content: \"\";\n  position: absolute;\n  width: 10px;\n  height: 2px;\n  left: 20%;\n  bottom: -2px;\n  border: 2px solid var(--clr);\n  background: #272822;\n  transition: 0.2s;\n}\n.addbut:hover i::after {\n  width: 15px;\n  left: 80%;\n  animation: move 3s infinite;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n@charset \"UTF-8\";\nbody {\n  font-family: 'Open Sans', sans-serif;\n  font-weight: 300;\n  line-height: 1.42em;\n  color:#fbf9fd;\n  \n  background-color:#f8f9fa;\n}\nh1 {\n  font-size:3em; \n  font-weight: 300;\n  line-height:1em;\n  text-align: center;\n  color: #4DC3FA;\n}\nh2 {\n  font-size:1em; \n  font-weight: 300;\n  text-align: center;\n  display: block;\n  line-height:1em;\n  padding-bottom: 2em;\n  color: #FB667A;\n}\nh2 a {\n  font-weight: 700;\n  text-transform: uppercase;\n  color: #FB667A;\n  text-decoration: none;\n}\n.blue { color: #185875;\n}\n.yellow { color: #FFF842;\n}\n.container th h1 {\n    font-weight: bold;\n    font-size: 1em;\n  text-align: left;\n  color: #185875;\n}\n.but {\n    text-align: right;\n    padding-right: 10%;\n}\n.butAction {\n  width: 100px;\n  border: 5px solid rgb(13, 97, 69);\n  background-color: rgb(66, 134, 87);\n  color: black;\n  padding: 14px 28px;\n  font-size: 16px;\n  cursor: pointer;\n  border-radius: 5px;\n}\n.container td {\n    font-weight: normal;\n    font-size: 1em;\n  box-shadow: 0 2px 2px -2px #0E1119;\n}\n.container {\n    text-align: left;\n    overflow: hidden;\n    width: 80%;\n    margin: 0 auto;\n  display: table;\n  padding: 0 0 8em 0;\n}\n.container td, .container th {\n    padding-bottom: 2%;\n    padding-top: 2%;\n  padding-left:2%;\n}\n\n/* Background-color of the odd rows */\n.container tr:nth-child(odd) {\n    background-color: #323C50;\n}\n\n/* Background-color of the even rows */\n.container tr:nth-child(even) {\n    background-color: #2C3446;\n}\n.container th {\n    background-color: #1F2739;\n    color: #9ab0c5;\n}\n.container td {\n    color: #9ab0c5;\n}\n.container td:first-child { color: #FB667A;\n}\n.container tr:hover {\n   background-color: #464A52;\nbox-shadow: 0 6px 6px -6px #0E1119;\n}\n.container td:hover {\n  background-color: #42ff97;\n  color: #403E10;\n  font-weight: bold;\n  \n  box-shadow: #7F7C21 -1px 1px, #7F7C21 -2px 2px, #7F7C21 -3px 3px, #7F7C21 -4px 4px, #7F7C21 -5px 5px, #7F7C21 -6px 6px;\n  transform: translate3d(6px, -6px, 0);\n  \n  transition-delay: 0s;\n    transition-duration: 0.4s;\n    transition-property: all;\n  transition-timing-function: line;\n}\n@media (max-width: 800px) {\n.container td:nth-child(4),\n.container th:nth-child(4) { display: none;\n}\n}\n.addbut {\n  position: relative;\n  background: #444;\n  color: #fff;\n  text-decoration: none;\n  text-transform: uppercase;\n  border: none;\n  letter-spacing: 0.1rem;\n  font-size: 1rem;\n  padding: 1rem 3rem;\n  transition: 0.2s;\n  width: 250px;\n}\n.addbut:hover {\n  letter-spacing: 0.2rem;\n  padding: 1.1rem 3.1rem;\n  background: var(--clr);\n  color: var(--clr);\n  /* box-shadow: 0 0 35px var(--clr); */\n  animation: box 3s infinite;\n}\n.addbut::before {\n  content: \"\";\n  position: absolute;\n  inset: 2px;\n  background: #272822;\n}\n.addbut span {\n  position: relative;\n  z-index: 1;\n}\n.addbut i {\n  position: absolute;\n  inset: 0;\n  display: block;\n}\n.addbut i::before {\n  content: \"\";\n  position: absolute;\n  width: 10px;\n  height: 2px;\n  left: 80%;\n  top: -2px;\n  border: 2px solid var(--clr);\n  background: #272822;\n  transition: 0.2s;\n}\n.addbut:hover i::before {\n  width: 15px;\n  left: 20%;\n  animation: move 3s infinite;\n}\n.addbut i::after {\n  content: \"\";\n  position: absolute;\n  width: 10px;\n  height: 2px;\n  left: 20%;\n  bottom: -2px;\n  border: 2px solid var(--clr);\n  background: #272822;\n  transition: 0.2s;\n}\n.addbut:hover i::after {\n  width: 15px;\n  left: 80%;\n  animation: move 3s infinite;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

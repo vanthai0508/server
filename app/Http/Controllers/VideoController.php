@@ -37,4 +37,9 @@ class VideoController extends BaseController
         // dd($request);
         return $this->sendResponse(new VideoResource($this->videoService->update($id, $request->all())), "Video updated");
     }
+
+    public function delete($id)
+    {
+        return $this->sendResponse($this->videoService->delete($id), "Deleted");
+    }
 }
