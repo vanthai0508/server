@@ -41,4 +41,9 @@ class CategoryController extends BaseController
     {
         return $this->sendResponse($this->categoryService->delete($id), "Deleted");
     }
+
+    public function videoOfCategory($id)
+    {
+        return $this->sendResponse($this->categoryService->videoOfCategory($id), "Video of category");
+    }
 }

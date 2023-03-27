@@ -72,4 +72,15 @@ class CategoryService
             return null;
         }
     }
+
+    public function videoOfCategory($id)
+    {
+        try {
+            $category = $this->category->with(['videos'])->find($id);
+            return $category;
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return null;
+        }
+    }
 }

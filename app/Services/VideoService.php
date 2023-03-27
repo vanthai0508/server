@@ -31,6 +31,8 @@ class VideoService
             $video = new Video();
             $video->title = $request->title;
             $video->path = $filePath;
+            $video->linkTest = $request->linkTest;
+            $video->code = $this->randString(10);
             
             $video->save();
         }
@@ -56,6 +58,16 @@ class VideoService
             Log::error($e->getMessage());
             return null;
         }
+    }
+
+    function randString( $length ) {
+        $str =null;
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        $size = strlen( $chars );
+        for( $i = 0; $i < $length; $i++ ) {
+            $str .= $chars[ rand( 0, $size - 1 ) ];
+        }
+        return $str;
     }
 
     public function update(int $id,array $request)

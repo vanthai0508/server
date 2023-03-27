@@ -9,7 +9,8 @@ import Swal from "sweetalert2"
 const store = createStore({
     state() {
         return {
-            id: 0
+            id: 0,
+            idCategory: 0
         }
     },
     plugins: [createPersistedState()],
@@ -17,6 +18,9 @@ const store = createStore({
         changeId (state, id) {
           // mutate state
           state.id = id
+        },
+        changeIdCategory(state, id){
+            state.idCategory = id
         }
     }
 })

@@ -9,7 +9,7 @@ class Video extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'title', 'path'
+        'title', 'path', 'linkTest', 'code'
     ];
 
     public function category()

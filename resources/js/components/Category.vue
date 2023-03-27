@@ -18,7 +18,7 @@
             <tbody>
                 <tr v-for="(item, index) in categories">
                     <th scope="row">{{ index + 1 }}</th>
-                    <td>{{ item.name }}</td>
+                    <td @click="videoOfCategory(item.id)">{{ item.name }}</td>
                     <td>{{ item.description }}</td>
                     <td>
                       <button class="butAction" @click="addEditCategory(item.id)">
@@ -68,9 +68,13 @@ import EventBus from 'vue3-eventbus'
           .catch(error => {
             Toast.fire({
                         icon: 'error',
-                        // title: response.data.message
+                        title: "Some error occured! Please try again"
                     });
           })
+        },
+        videoOfCategory(id){
+          this.$store.commit('changeIdCategory', id)
+          this.$router.push('/videoOfCategory')
         }
     },
     mounted() {

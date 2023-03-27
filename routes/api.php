@@ -14,7 +14,11 @@ use App\Http\Controllers\AuthController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
 // Route::post('signup', 'App\Http\Controllers\AuthController@signup');
+
+Route::get('sheet', 'App\Http\Controllers\GoogleSheetController@index');
+
 Route::group([
     'prefix' => 'auth'
 ], function () {
@@ -49,6 +53,8 @@ Route::group([
             Route::put('updateCategory/{id}', 'App\Http\Controllers\CategoryController@update');
 
             Route::delete('deleteCategory/{id}', 'App\Http\Controllers\CategoryController@delete');
+
+            Route::get('videoOfCategory/{id}', 'App\Http\Controllers\CategoryController@videoOfCategory');
             
         });
         
