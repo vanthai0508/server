@@ -12,7 +12,7 @@ class CreateVideosTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('path');
-            $table->string('linkTest')->nullable(true);
+            $table->string('link_test')->nullable(true);
             $table->string('code');
             $table->timestamps();
         });

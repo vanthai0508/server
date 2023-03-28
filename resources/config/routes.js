@@ -10,6 +10,7 @@ import Wel from '../js/components/Wel.vue'
 import Category from '../js/components/Category.vue'
 import addCategory from '../js/components/AddCategory.vue'
 import videoOfCategory from '../js/components/VideoOfCategory.vue'
+import DetailVideo from '../js/components/DetailVideo.vue'
 // import Contact from '@/components/Contact.vue'
 
 const routes = [
@@ -82,6 +83,13 @@ const routes = [
     {
         path: '/videoOfCategory',
         component: videoOfCategory,
+        meta: {
+            auth: false
+        }
+    },
+    {
+        path: '/detailVideo',
+        component: DetailVideo,
         meta: {
             auth: false
         }

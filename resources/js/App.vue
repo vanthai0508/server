@@ -3,6 +3,11 @@
     <RouterLink to="/login" class="nav-link">Login</RouterLink>
     <RouterLink to="/register" class="nav-link">Register</RouterLink>
     <RouterLink to="/logout" class="nav-link">Logout</RouterLink>
+    <div class = "icon-home">
+      <RouterLink to="/house">
+        <img src="Image/25694.png">
+      </RouterLink>
+    </div>
     <!-- <a href="#contact">Liên hệ</a>
     <a href="#about">Về chúng tôi</a> -->
   </div>
@@ -51,6 +56,7 @@
   body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
+    
 }
  
 .topnav {
@@ -73,6 +79,15 @@
     color: black;
 }
  
+.icon-home img {
+  padding: 5px;
+  width: 50px;
+  height: 50px;
+}
+.icon-home {
+ text-align: right;
+ padding-right: 40px;
+}
 .nav-link:active {
     background-color: #4CAF50;
     color: white;

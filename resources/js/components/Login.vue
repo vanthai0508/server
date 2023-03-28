@@ -1,7 +1,7 @@
 //login.vue
 
 <template>
-    <div>
+    <div class="thai">
         <form autocomplete="off" @submit.prevent="login" v-if="!success" method="post" >
             <div class="container">
                 <h1>Form Đăng Nhập</h1>

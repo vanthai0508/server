@@ -18,7 +18,7 @@ class VideoResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            
+            'link_test' => $this->link_test,
             'path' => $this->path,
             'created_at' => Carbon::parse($this->created_at)->format('d/m/Y'),
             'update_at' => Carbon::parse($this->create_at)->format('d/m/Y'),

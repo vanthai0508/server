@@ -11,5 +11,5 @@ class Sheet extends Model
 
     protected $table = 'sheet';
 
-    protected $fillable = ['email', 'code', 'score'];
+    protected $fillable = ['email', 'code', 'score', 'created_at', 'updated_at'];
 }

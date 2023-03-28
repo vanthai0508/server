@@ -12,6 +12,10 @@
                         <input type="text" v-model="title" >
                     </label>
                     <label>
+                        Link test:
+                        <input type="text" v-model="linkTest" >
+                    </label>
+                    <label>
                         Video file:
                         <input type="file" @change="selectFile">
                     </label><br><br>
@@ -49,16 +53,15 @@
     import Multiselect from '@vueform/multiselect'
     import axios from 'axios'
     import eventBus from 'vue3-eventbus'
-
     import useEventsBus from '../event/eventBus';
     const { bus } = useEventsBus()
-
     // import Multiselect from 'vue-multiselect'
     export default {
         data(){
             return {
                 categories: {},
                 title: '',
+                linkTest: '',
                 selectedFile: null,
                 path: '',
                 categorySelected: '',
@@ -77,6 +80,7 @@
                     .then(response => {
                         this.title = response.data.data.title
                         this.path = 'storage/' + response.data.data.path
+                        this.linkTest = response.data.data.link_test
                         this.categorySelected = response.data.data.category
                         this.getListCategory()
                     })
@@ -87,15 +91,15 @@
             editVideo(id)
             {
                 if(this.categorySelected.length != 0){
-                    const formData = new FormData();
-                    formData.append('title', this.title);
+                    const formData = new FormData()
+                    formData.append('title', this.title)
+                    formData.append('link_test', this.linkTest)
                     if(this.selectedFile != null){
                         formData.append('video', this.selectedFile)
                     }
                     this.categorySelected.forEach((item, index) => {
-                        formData.append('category['+index+']', item.id);
+                        formData.append('category['+index+']', item.id)
                     });
-
                     axios.post('/api/auth/video/updateVideo/' + id, formData)
                     .then(response => {
                         Toast.fire({
@@ -108,7 +112,7 @@
                         Toast.fire({
                             icon: 'error',
                             title: 'Some error occured! Please try again'
-                        });
+                        })
                     })
                     
                 }
@@ -132,11 +136,12 @@
                     
                     const listId = this.categorySelected.map(category => category.id)
                     
-                    const formData = new FormData();
-                    formData.append('title', this.title);
-                    formData.append('video', this.selectedFile);
+                    const formData = new FormData()
+                    formData.append('title', this.title)
+                    formData.append('link_test', this.linkTest)
+                    formData.append('video', this.selectedFile)
                     this.categorySelected.forEach((item, index) => {
-                        formData.append('category['+index+']', item.id);
+                        formData.append('category['+index+']', item.id)
                     });
                     axios.post('/api/auth/video/upload-file', formData)
                     .then(response => {
@@ -174,7 +179,6 @@
                 this.findVideo(this.idEdit)
             }
             
-
         },
         
         mounted() {

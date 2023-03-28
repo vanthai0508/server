@@ -19,8 +19,8 @@
         <tbody>
           <tr v-for="(item, index) in videos">
             <th scope="row">{{ index + 1 }}</th>
-            <td>{{ item.title }}</td>
-            <td>
+            <td @click="detailVideo(item.id)">{{ item.title }}</td>
+            <td @click="detailVideo(item.id)">
                <video width="320" height="240" controls>
                   <source :src="'storage/'+item.path" type="video/mp4">
                </video>
@@ -79,6 +79,10 @@ const {emit}=useEventsBus()
             });
             this.load()
           })
+        },
+        detailVideo(id) {
+          this.$store.commit('changeIdVideo', id)
+          this.$router.push('detailVideo')
         }
     },
     mounted() {
@@ -101,7 +105,7 @@ body {
   line-height: 1.42em;
   color:#fbf9fd;
   
-  background-color:#f8f9fa;
+  background-color:#5f656b;
 }
 
 h1 {

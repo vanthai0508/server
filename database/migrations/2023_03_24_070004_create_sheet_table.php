@@ -19,6 +19,7 @@ class CreateSheetTable extends Migration
             $table->string('email');
             $table->string('code');
             $table->string('score');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

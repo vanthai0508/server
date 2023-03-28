@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Video;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Constants\Constants;
 use Illuminate\Support\Facades\Storage;
@@ -31,7 +33,7 @@ class VideoService
             $video = new Video();
             $video->title = $request->title;
             $video->path = $filePath;
-            $video->linkTest = $request->linkTest;
+            $video->link_test = $request->link_test;
             $video->code = $this->randString(10);
             
             $video->save();
@@ -110,6 +112,18 @@ class VideoService
             $videoDelete->delete();
             return $videoDelete;
 
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return null;
+        }
+    }
+
+    public function detailVideo($id)
+    {
+        try {
+            $data = $this->video->with(['category'])->find($id);
+            $data['history_score'] = DB::table('sheet')->where('email', Auth::user()->email)->where('code', $data->code)->orderBy('created_at', 'desc')->get();
+            return $data;
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return null;

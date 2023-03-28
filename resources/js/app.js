@@ -10,7 +10,8 @@ const store = createStore({
     state() {
         return {
             id: 0,
-            idCategory: 0
+            idCategory: 0,
+            idVideo: 0
         }
     },
     plugins: [createPersistedState()],
@@ -21,6 +22,9 @@ const store = createStore({
         },
         changeIdCategory(state, id){
             state.idCategory = id
+        },
+        changeIdVideo(state, id){
+            state.idVideo = id
         }
     }
 })

@@ -12,6 +12,7 @@ class GoogleSheetController extends Controller
     public function index()
     {
         // dd('thai');
+        "SELECT @@global.time_zone";
         $value = Sheets::spreadsheet('1jgYSL7jophAqS_TJltFHQEMn8-B66ejiJ8q1QOtPAxI')->sheet('Demo')->all();
         dd($value);
     }

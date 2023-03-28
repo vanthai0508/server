@@ -43,10 +43,7 @@
 <script>
 import axios from 'axios';
 import { RouterLink, RouterView } from 'vue-router';
-import eventBus from 'vue3-eventbus';
-import useEventsBus from '../event/eventBus';
 
-const {emit}=useEventsBus()
 
 
  export default {

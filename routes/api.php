@@ -40,6 +40,8 @@ Route::group([
 
             Route::delete('deleteVideo/{id}', 'App\Http\Controllers\VideoController@delete');
 
+            Route::get('detailVideo/{id}', 'App\Http\Controllers\VideoController@detailVideo');
+
         });
         
         Route::prefix('category')->group(function () {

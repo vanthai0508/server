@@ -42,4 +42,9 @@ class VideoController extends BaseController
     {
         return $this->sendResponse($this->videoService->delete($id), "Deleted");
     }
+
+    public function detailVideo($id)
+    {   
+        return $this->sendResponse($this->videoService->detailVideo($id), "Detail video");
+    }
 }
