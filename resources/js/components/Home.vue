@@ -1,203 +1,192 @@
 <template>
-    <h1>This is home page </h1>
-    <div class="but">
-        <button class="addbut" style="--clr:#39FF14" @click="addEditVideo(0)"><span>
-          Add video
-            
-        </span><i></i></button>
-    </div>   
-    <div>
-      <table class="container">
-         <thead>
-          <tr>
-            <th scope="col" class="category-order">STT</th>
-            <th scope="col">Title</th>
-            <th scope="col">Video</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in videos">
-            <th scope="row">{{ index + 1 }}</th>
-            <td>{{ item.title }}</td>
-            <td>
-               <video width="320" height="240" controls>
-                  <source :src="'storage/'+item.path" type="video/mp4">
-               </video>
-            </td>
-            <td>
-              <button class="butAction" @click="addEditVideo(item.id)">
-                Edit
-              </button><br>
-              <button class="butAction" @click="deleteVideo(item.id)">
-                Delete
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div id="app">
+  <!-- Columns: <input v-model.number="numberOfColumns"> -->
+  <h1>List category</h1>
+  <div class = "search">
+    <input v-model="textSearch" @change="search(textSearch)" class="inputSearch" placeholder="Search...">
 
+  </div>
+  <ul :style="gridStyle" class="card-list">
+    <li @click="clickCategory()" v-for="item in categories" :key="item.id" class="card-item">
+      <!-- <form  class="selectItem">
+      <select >
+        <option>Detail</option>
+        <option>Register</option>
+      </select>
+    </form> -->
+    <p class="xem" @click="showForm = !showForm">Xem</p>
+      <img :src="item.path" alt="">
+        <p>{{ item.name }}</p>
+    </li>
+  </ul>
+</div>
+<dix>
+  <form v-if="showForm" class="small-form" @submit.prevent="submitForm">
+    <div class="butExit">
+
+      <button class="form-exit" @click="showForm = !showForm">X</button>
     </div>
- </template>
- 
+    <h1>Name</h1>
+    <div class="content-form-small">
+      <label>Teacher:csdfdsfksdfsd</label><br>
+      <label class="labelSmall">Number video:</label><br>
+      <label>Rate:</label><br>
+      <label>Number registered:</label><br>
+      <label>Price:</label><br>
+      <label>Status:</label><br>
+      <label>Description:</label><br>
+    </div>
+    
+  </form>
+</dix>
+
+<!-- <div>
+    <button class="butItem" @click="showForm = !showForm">Show Form</button>
+    <form v-if="showForm" class="small-form" @submit.prevent="submitForm">
+      <select >
+        <option>Detail</option>
+        <option>Register</option>
+      </select>
+    </form>
+</div> -->
+</template>
 <script>
-import axios from 'axios';
-import { RouterLink, RouterView } from 'vue-router';
+  import axios from 'axios'
 
 
 
- export default {
+  export default {
     data() {
       return {
-         videos: {},
-        //  id: ''
+        showForm: false,
+        name: '',
+        email: '',
+        categories: {},
+        textSearch: '',
+        numberOfColumns: 5,
       }
     },
+    computed: {
+      gridStyle() {
+        return {
+          gridTemplateColumns: `repeat(${this.numberOfColumns}, minmax(50px, 1fr))`
+        } 
+      },
+    },
     methods: {
-        load() {
-          axios.get("/api/auth/video/listVideo").then(({ data }) => {
-            this.videos = data.data
-          })
-        },
-        addEditVideo(param) {
-          this.$store.commit('changeId', param)
-          this.$router.push('/uploadFile')
-        },
-        deleteVideo(id){
-          axios.delete("/api/auth/video/deleteVideo/"+id).then( response => {
-            Toast.fire({
-              icon: 'success',
-              title: response.data.message
-            });
-            this.load()
-          })
-        }
+      load() {
+        axios.get('/api/auth/category/listCategory').then(response => {
+          this.categories = response.data.data
+          console.log('thai', response.status)
+        })
+      },
+      search(text)
+      {
+        axios.get('/api/auth/category/search?textSearch=' + text).then(response => {
+          this.categories = response.data.data
+        })
+      },
+      addCard() {
+        this.cards.push('new-card')
+      },
+      clickCategory(){
+        // console.log("thai");
+      }
     },
-    mounted() {
-        // this.load();
-    },
-    created() {
-        
-        this.load();
-    },
-    components: { RouterLink, RouterView }
-}
- </script>
- <style>
-@charset "UTF-8";
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
+    created(){
+      this.load()
+    }
+  }
+</script>
 
+<style>
+.search {
+  text-align: right;
+  padding-right: 100px;
+  box-sizing: border-box;
+  
+}
+.inputSearch:hover{
+  background-color: rgb(117, 243, 138);
+}
+.inputSearch {
+  margin-bottom: 1rem;
+  border: 2px solid #976464;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+.card-list {
+  display: grid;
+  grid-gap: 1em;
+}
+.butItem {
+  width: 30px;
+  height: 30px;
+}
+.card-item {
+  /* background-color: rgb(122, 151, 180); */
+  padding: 1em;
+}
+.card-item img {
+  text-align: center;
+  width: 300px;
+  height: 300px;
+  border-radius: 8%;
+}
+
+.selectItem {
+  text-align: right;
+}
 body {
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 300;
-  line-height: 1.42em;
-  color:#fbf9fd;
-  
-  background-color:#f8f9fa;
+  background: #20262E;
+  padding: 20px;
+  font-family: Helvetica;
+}
+.xem {
+  text-align: right;
+  margin-bottom: 0px;
+  color: blue;
+}
+.small-form {
+    left: 40%;
+    top: 70%;
+    position: absolute;
+    margin-top: -25%;
+    width: 300px;
+    height: 300px;
+    background-color: rgb(239, 245, 243);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* padding: 20px; */
+    /* background-color: #f2f2f2; */
+    border-radius: 10px;
 }
 
-h1 {
-  font-size:3em; 
-  font-weight: 300;
-  line-height:1em;
-  text-align: center;
-  color: #4DC3FA;
+ul {
+  list-style-type: none;
 }
 
-h2 {
-  font-size:1em; 
-  font-weight: 300;
-  text-align: center;
-  display: block;
-  line-height:1em;
-  padding-bottom: 2em;
-  color: #FB667A;
+.form-exit {
+  position: absolute;
+  text-align: right;
+  top: 10px;
+  right: 10px;
+  font-size: 16px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: #999;
+  transition: color 0.3s ease;
 }
 
-h2 a {
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #FB667A;
-  text-decoration: none;
+.form-exit:hover {
+  color: #333;
 }
-
-.blue { color: #185875; }
-.yellow { color: #FFF842; }
-
-.container th h1 {
-    font-weight: bold;
-    font-size: 1em;
+.content-form-small {
   text-align: left;
-  color: #185875;
+  margin-left: 0px;
+  margin: 0px;
+  padding-left: 0%;
 }
-
-.container td {
-    font-weight: normal;
-    font-size: 1em;
-  -webkit-box-shadow: 0 2px 2px -2px #0E1119;
-     -moz-box-shadow: 0 2px 2px -2px #0E1119;
-          box-shadow: 0 2px 2px -2px #0E1119;
-}
-
-.container {
-    text-align: left;
-    overflow: hidden;
-    width: 80%;
-    margin: 0 auto;
-  display: table;
-  padding: 0 0 8em 0;
-}
-
-.container td, .container th {
-    padding-bottom: 2%;
-    padding-top: 2%;
-  padding-left:2%;  
-}
-
-/* Background-color of the odd rows */
-.container tr:nth-child(odd) {
-    background-color: #323C50;
-}
-
-/* Background-color of the even rows */
-.container tr:nth-child(even) {
-    background-color: #2C3446;
-}
-
-.container th {
-    background-color: #1F2739;
-    color: #9ab0c5;
-}
-
-.container td {
-    color: #9ab0c5;
-}
-
-.container td:first-child { color: #FB667A; }
-
-.container tr:hover {
-   background-color: #464A52;
--webkit-box-shadow: 0 6px 6px -6px #0E1119;
-     -moz-box-shadow: 0 6px 6px -6px #0E1119;
-          box-shadow: 0 6px 6px -6px #0E1119;
-}
-
-.container td:hover {
-  background-color: #42ff97;
-  color: #403E10;
-  font-weight: bold;
-  
-  box-shadow: #7F7C21 -1px 1px, #7F7C21 -2px 2px, #7F7C21 -3px 3px, #7F7C21 -4px 4px, #7F7C21 -5px 5px, #7F7C21 -6px 6px;
-  transform: translate3d(6px, -6px, 0);
-  
-  transition-delay: 0s;
-    transition-duration: 0.4s;
-    transition-property: all;
-  transition-timing-function: line;
-}
-
-@media (max-width: 800px) {
-.container td:nth-child(4),
-.container th:nth-child(4) { display: none; }
-}</style>
- 
+</style>

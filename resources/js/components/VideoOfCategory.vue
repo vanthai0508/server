@@ -60,7 +60,6 @@ const {emit}=useEventsBus()
     },
     methods: {
         load() {
-
             this.idCategory = this.$store.state.idCategory
             axios.get("/api/auth/category/videoOfCategory/" + this.idCategory).then(({ data }) => {
             this.videos = data.data.videos
@@ -81,8 +80,16 @@ const {emit}=useEventsBus()
           })
         },
         detailVideo(id) {
-          this.$store.commit('changeIdVideo', id)
-          this.$router.push('detailVideo')
+          axios.get("/api/auth/video/checkRoleWatch/" + id +"/" + this.idCategory).then( response => {
+            this.$store.commit('changeIdVideo', id)
+            this.$router.push('detailVideo')
+          })
+          .catch( error => {
+            Toast.fire({
+              icon: 'error',
+              title: "You must do the previous test 7 points higher !!!"
+            });
+          })
         }
     },
     mounted() {

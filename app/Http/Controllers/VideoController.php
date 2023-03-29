@@ -47,4 +47,15 @@ class VideoController extends BaseController
     {   
         return $this->sendResponse($this->videoService->detailVideo($id), "Detail video");
     }
+
+    public function checkRoleWatch($idVideo, $idCategory)
+    {
+        if($this->videoService->checkRoleWatch($idVideo, $idCategory) == 1)
+        {
+            return $this->sendResponse(null, "Check role watch video");
+        } else {
+            return $this->sendError("You must do the previous test 7 points higher", null, $code = 422);
+        }
+        
+    }
 }

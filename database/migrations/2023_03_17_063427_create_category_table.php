@@ -16,7 +16,14 @@ class CreateCategoryTable extends Migration
         Schema::create('category', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->longText('description')->nullable();
+            $table->string('teacher')->nullable(true);
+            $table->integer('number_video')->nullable(true);
+            $table->float('rate')->nullable(true);
+            $table->integer('number_registered')->default(0);
+            $table->bigInteger('price')->nullable(true);
+            $table->integer('status')->default(0);
+            $table->string('path');
+            $table->longText('description')->nullable(true);
             $table->timestamps();
         });
     }

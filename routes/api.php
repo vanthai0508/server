@@ -29,6 +29,14 @@ Route::group([
       'middleware' => 'auth:api'
     ], function() {
 
+        Route::prefix('user')->group(function () {
+            Route::get('registerCategory/{id}', 'App\Http\Controllers\UserController@registerCategory');
+
+            Route::get('listCategoryOfUser', 'App\Http\Controllers\UserController@listCategoryOfUser');
+
+            Route::get('checkRoleWatchCategory/{id}', 'App\Http\Controllers\UserController@checkRoleWatchCategory');
+        });
+
         Route::prefix('video')->group(function () {
             Route::get('listVideo', 'App\Http\Controllers\VideoController@list');
 
@@ -41,6 +49,8 @@ Route::group([
             Route::delete('deleteVideo/{id}', 'App\Http\Controllers\VideoController@delete');
 
             Route::get('detailVideo/{id}', 'App\Http\Controllers\VideoController@detailVideo');
+
+            Route::get('checkRoleWatch/{idVideo}/{idCategory}', 'App\Http\Controllers\VideoController@checkRoleWatch');
 
         });
         
@@ -58,6 +68,7 @@ Route::group([
 
             Route::get('videoOfCategory/{id}', 'App\Http\Controllers\CategoryController@videoOfCategory');
             
+            Route::get('search', 'App\Http\Controllers\CategoryController@search');
         });
         
 

@@ -20,6 +20,13 @@ class CategoryService
     public function create($request)
     {
         try {
+            $image = $request->file('file');
+
+            $imageName = time() . '.' . $image->extension();
+
+            $image->storeAs('public/images', $imageName);
+
+            $request['path'] = 'storage/images/'.$imageName;
             return $this->category->create($request->all()); 
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -77,6 +84,21 @@ class CategoryService
     {
         try {
             $category = $this->category->with(['videos'])->find($id);
+            return $category;
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return null;
+        }
+    }
+
+    public function search($request)
+    {
+        try {
+            if($request['textSearch'] == null){
+                $category = $this->category->get();
+            } else {
+                $category = $this->category->where('name', 'LIKE', "%{$request['textSearch']}%")->get();
+            }
             return $category;
         } catch (\Exception $e) {
             Log::error($e->getMessage());

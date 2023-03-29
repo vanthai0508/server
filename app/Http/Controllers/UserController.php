@@ -24,41 +24,26 @@ class UserController extends BaseController
         return $this->sendResponse($this->userService->list(), "List user");
     }
 
-    // public function update(Request $request , $id)
-    // {
+    public function registerCategory($id)
+    {
+        if($this->userService->registerCategory($id) == 1){
+            return $this->sendResponse(null, "Success!!");
+        } else {
+            return $this->sendError("You are registered !!!", null, $code = 422);
+        }
+    }
 
-    // }
-
-    // public function check()
-    // {
-    //     echo Auth::check();
-    // }
-
-    // public function getAllUser(){
-    //     if($data = $this->userService->getAllUser()) {
-    //         return response()->json([
-    //             'status' => __('message.success'),
-    //             'data' => $data
-    //         ]);
-    //     } else {
-    //         return response()->json([
-    //             'status' => __('message.fails')
-    //         ]);
-    //     }
-    // }
-
-    // public function updateUser(Request $data)
-    // {
-    //     if($this->userService->update($data->all())) {
-    //         return response()->json([
-    //             'status' => __('message.success'),
-    //             'data' => $data->all()
-    //         ]);
-    //     } else {
-    //         return response()->json([
-    //             'status' => __('message.fails')
-    //         ]);
-    //     }
-        
-    // }
+    public function listCategoryOfUser()
+    {   
+        return $this->sendResponse($this->userService->listCategoryOfUser(), "List category");
+    }
+    
+    public function checkRoleWatchCategory($id)
+    {
+        if($this->userService->checkRoleWatchCategory($id) == 1){
+            return $this->sendResponse(null, "Check role watch category!!");
+        } else {
+            return $this->sendError("Please register category !!!", null, $code = 422);
+        }
+    }
 }   

@@ -12,10 +12,16 @@ class Category extends Model
 
     protected $table = 'category';
 
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description', 'teacher', 'number_video',
+    'rate', 'number_registered', 'price', 'status', 'path'];
 
     public function videos()
     {
         return $this->belongsToMany(Video::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsToMany(User::class, 'user_category');
     }
 }

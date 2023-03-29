@@ -106,7 +106,7 @@
                             icon: 'success',
                             title: response.data.message
                         });
-                        this.$router.push('/home')
+                        this.$router.push('/videoOfCategory')
                     })
                     .catch(error => {
                         Toast.fire({
@@ -149,7 +149,7 @@
                             icon: 'success',
                             title: response.data.message
                         });
-                        this.$router.push('/home')
+                        this.$router.push('/videoOfCategory')
                     })
                     .catch(error => {
                         Toast.fire({

@@ -46,4 +46,9 @@ class CategoryController extends BaseController
     {
         return $this->sendResponse($this->categoryService->videoOfCategory($id), "Video of category");
     }
+
+    public function search(Request $request)
+    {   
+        return $this->sendResponse($this->categoryService->search($request->all()), "Search category");
+    }
 }

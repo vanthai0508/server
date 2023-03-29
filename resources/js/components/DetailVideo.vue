@@ -49,6 +49,7 @@ export default {
         load(id) {
             axios.get("/api/auth/video/detailVideo/" +id).then(({ data }) => {
             this.historyScore = data.data.history_score
+            console.log()
             this.title = data.data.title
             this.link = data.data.link_test
             this.categories = data.data.category
@@ -58,10 +59,7 @@ export default {
         }
     },
     created() {
-        console.log(this.$store.state.idVideo)
         this.load(this.$store.state.idVideo)
-        console.log("thai", this.link)
-
     }
 }
 </script>

@@ -42,22 +42,22 @@ class SheetCronjob extends Command
      */
     public function handle()
     {
-        $value = Sheets::spreadsheet('1jgYSL7jophAqS_TJltFHQEMn8-B66ejiJ8q1QOtPAxI')->sheet('Demo')->all();
+        $value = Sheets::spreadsheet('1jgYSL7jophAqS_TJltFHQEMn8-B66ejiJ8q1QOtPAxI')->sheet('Server')->all();
         // dd($value);
         unset($value[0]);
         $value = array_values($value);
         foreach($value as $key => $sheet) {
             // dd($sheet);
             if (!empty($sheet)) {
-                if($this->find($sheet[1], $sheet[3], $sheet[0]) != null) {
+                if($this->find(trim($sheet[1]), trim($sheet[3]), trim($sheet[0])) != null) {
                     continue;
                 } else {
                     $result = new Sheet();
-                    $result->email = $sheet[1];
-                    $result->code = $sheet[3];
-                    $result->score = $sheet[2];
-                    $result->created_at = strtotime(date('Y-m-d H:i:s', strtotime($sheet[0])));
-                    $result->updated_at = strtotime(date('Y-m-d H:i:s', strtotime($sheet[0])));
+                    $result->email = trim($sheet[1]);
+                    $result->code = trim($sheet[3]);
+                    $result->score = trim($sheet[2]);
+                    $result->created_at = strtotime(date('Y-m-d H:i:s', strtotime(trim($sheet[0]))));
+                    $result->updated_at = strtotime(date('Y-m-d H:i:s', strtotime(trim($sheet[0]))));
                     $result->save();
                 }
             }

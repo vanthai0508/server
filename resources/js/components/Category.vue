@@ -62,14 +62,14 @@ import EventBus from 'vue3-eventbus'
             Toast.fire({
                         icon: 'success',
                         title: response.data.message
-                    });
+                    })
             this.load()
           })
           .catch(error => {
             Toast.fire({
                         icon: 'error',
                         title: "Some error occured! Please try again"
-                    });
+                    })
           })
         },
         videoOfCategory(id){

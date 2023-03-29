@@ -7,15 +7,20 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Constants\Constants;
+use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 
 class VideoService
 {
     protected $video;
 
-    public function __construct(Video $video)
+    protected $category;
+
+
+    public function __construct(Video $video, Category $category)
     {
         $this->video = $video;
+        $this->category = $category;
     }
 
 
@@ -124,6 +129,32 @@ class VideoService
             $data = $this->video->with(['category'])->find($id);
             $data['history_score'] = DB::table('sheet')->where('email', Auth::user()->email)->where('code', $data->code)->orderBy('created_at', 'desc')->get();
             return $data;
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return null;
+        }
+    }
+
+    public function checkRoleWatch($idVideo, $idCategory)
+    {
+        try {
+            $categories = $this->category->with(['videos'])->find($idCategory);
+            if(sizeof($categories['videos']) >= 2)
+            {
+                $position = 0;
+                foreach($categories['videos'] as $key => $value){
+                    if($value->id == $idVideo){
+                        $position = $key;
+                    }
+                }
+                if($position >= 1) {
+                    $video = DB::table('sheet')->where('email', Auth::user()->email)->where('code', $categories['videos'][$position - 1]['code'])->orderBy('created_at', 'desc')->first();
+                    $scoreArray = explode("/", $video->score);
+                    if(intval($scoreArray[0]) >= 7) {
+                        return 1;
+                    } else return 0;
+                } else return 1;
+            } else return 1;
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return null;

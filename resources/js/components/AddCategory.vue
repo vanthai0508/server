@@ -9,8 +9,14 @@
                     <hr>
                     <label for="Name"><b>Name</b></label>
                     <input type="text" v-model="name" placeholder="Name" name="name" >
+                    <label for="Teache"><b>Teacher</b></label>
+                    <input type="text" v-model="teacher" placeholder="Teacher" name="teacher" >
+                    <label for="Price"><b>Price</b></label>
+                    <input type="text" v-model="price" placeholder="Price" name="price" >
                     <label for="Description"><b>Description</b></label>
                     <input type="text" v-model="description" placeholder="Description" name="description" >
+                    <label for="Avatar"><b>Avatar</b></label>
+                    <input type="file" @change="selectFile"  name="avatar" >
                    
                     <div class="clearfix">
                         <button type="submit" class="signupbtn">Submit</button>
@@ -27,6 +33,10 @@
         data(){
             return {
                 name: '',
+                teacher: '',
+                price: '',
+                selectedFile: null,
+                avatar: '',
                 description: '',
                 idEdit: ''
             } 
@@ -35,6 +45,9 @@
             load(){
                 this.name = '',
                 this.description = ''
+            },
+            selectFile(event) {
+                this.selectedFile = event.target.files[0];
             },
             findCategory(id){
                 axios.get('/api/auth/category/findCategory/' + id)
@@ -74,9 +87,12 @@
                 })
             },
             createCategory(){
-                const formData = new FormData();
-                formData.append('name', this.name);
-                formData.append('description', this.description);
+                const formData = new FormData()
+                formData.append('name', this.name)
+                formData.append('teacher', this.teacher)
+                formData.append('price', this.price)
+                formData.append('description', this.description)
+                formData.append('file', this.selectedFile)
                 axios.post('/api/auth/category/createCategory', formData)
                 .then(response => {
                     Toast.fire({

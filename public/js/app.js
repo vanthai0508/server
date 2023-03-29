@@ -19767,6 +19767,10 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       name: '',
+      teacher: '',
+      price: '',
+      selectedFile: null,
+      avatar: '',
       description: '',
       idEdit: ''
     };
@@ -19774,6 +19778,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     load: function load() {
       this.name = '', this.description = '';
+    },
+    selectFile: function selectFile(event) {
+      this.selectedFile = event.target.files[0];
     },
     findCategory: function findCategory(id) {
       var _this = this;
@@ -19813,7 +19820,10 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
       var formData = new FormData();
       formData.append('name', this.name);
+      formData.append('teacher', this.teacher);
+      formData.append('price', this.price);
       formData.append('description', this.description);
+      formData.append('file', this.selectedFile);
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('/api/auth/category/createCategory', formData).then(function (response) {
         Toast.fire({
           icon: 'success',
@@ -19956,9 +19966,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    console.log(this.$store.state.idVideo);
     this.load(this.$store.state.idVideo);
-    console.log("thai", this.link);
   }
 });
 
@@ -19977,49 +19985,48 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.mjs");
-
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      videos: {}
-      //  id: ''
+      showForm: false,
+      name: '',
+      email: '',
+      categories: {},
+      textSearch: '',
+      numberOfColumns: 5
     };
   },
-
+  computed: {
+    gridStyle: function gridStyle() {
+      return {
+        gridTemplateColumns: "repeat(".concat(this.numberOfColumns, ", minmax(50px, 1fr))")
+      };
+    }
+  },
   methods: {
     load: function load() {
       var _this = this;
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/auth/video/listVideo").then(function (_ref) {
-        var data = _ref.data;
-        _this.videos = data.data;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/auth/category/listCategory').then(function (response) {
+        _this.categories = response.data.data;
+        console.log('thai', response.status);
       });
     },
-    addEditVideo: function addEditVideo(param) {
-      this.$store.commit('changeId', param);
-      this.$router.push('/uploadFile');
-    },
-    deleteVideo: function deleteVideo(id) {
+    search: function search(text) {
       var _this2 = this;
-      axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"]("/api/auth/video/deleteVideo/" + id).then(function (response) {
-        Toast.fire({
-          icon: 'success',
-          title: response.data.message
-        });
-        _this2.load();
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/auth/category/search?textSearch=' + text).then(function (response) {
+        _this2.categories = response.data.data;
       });
+    },
+    addCard: function addCard() {
+      this.cards.push('new-card');
+    },
+    clickCategory: function clickCategory() {
+      // console.log("thai");
     }
-  },
-  mounted: function mounted() {
-    // this.load();
   },
   created: function created() {
     this.load();
-  },
-  components: {
-    RouterLink: vue_router__WEBPACK_IMPORTED_MODULE_1__.RouterLink,
-    RouterView: vue_router__WEBPACK_IMPORTED_MODULE_1__.RouterView
   }
 });
 
@@ -20284,7 +20291,7 @@ var _useEventsBus = (0,_event_eventBus__WEBPACK_IMPORTED_MODULE_3__["default"])(
             icon: 'success',
             title: response.data.message
           });
-          _this2.$router.push('/home');
+          _this2.$router.push('/videoOfCategory');
         })["catch"](function (error) {
           Toast.fire({
             icon: 'error',
@@ -20323,7 +20330,7 @@ var _useEventsBus = (0,_event_eventBus__WEBPACK_IMPORTED_MODULE_3__["default"])(
             icon: 'success',
             title: response.data.message
           });
-          _this3.$router.push('/home');
+          _this3.$router.push('/videoOfCategory');
         })["catch"](function (error) {
           Toast.fire({
             icon: 'error',
@@ -20417,8 +20424,16 @@ var _useEventsBus = (0,_event_eventBus__WEBPACK_IMPORTED_MODULE_2__["default"])(
       });
     },
     detailVideo: function detailVideo(id) {
-      this.$store.commit('changeIdVideo', id);
-      this.$router.push('detailVideo');
+      var _this3 = this;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/auth/video/checkRoleWatch/" + id + "/" + this.idCategory).then(function (response) {
+        _this3.$store.commit('changeIdVideo', id);
+        _this3.$router.push('detailVideo');
+      })["catch"](function (error) {
+        Toast.fire({
+          icon: 'error',
+          title: "You must do the previous test 7 points higher !!!"
+        });
+      });
     }
   },
   mounted: function mounted() {
@@ -20546,9 +20561,18 @@ var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "for": "Name"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Name")], -1 /* HOISTED */);
 var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": "Teache"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Teacher")], -1 /* HOISTED */);
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": "Price"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Price")], -1 /* HOISTED */);
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": "Description"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Description")], -1 /* HOISTED */);
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": "Avatar"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Avatar")], -1 /* HOISTED */);
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "clearfix"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   type: "submit",
@@ -20558,7 +20582,7 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     autocomplete: "off",
-    onSubmit: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+    onSubmit: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.addEditCategory();
     }, ["prevent"])),
     method: "post"
@@ -20572,11 +20596,31 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.name]]), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+      return $data.teacher = $event;
+    }),
+    placeholder: "Teacher",
+    name: "teacher"
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.teacher]]), _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text",
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+      return $data.price = $event;
+    }),
+    placeholder: "Price",
+    name: "price"
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.price]]), _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text",
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $data.description = $event;
     }),
     placeholder: "Description",
     name: "description"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.description]]), _hoisted_7])], 32 /* HYDRATE_EVENTS */)])]);
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.description]]), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "file",
+    onChange: _cache[4] || (_cache[4] = function () {
+      return $options.selectFile && $options.selectFile.apply($options, arguments);
+    }),
+    name: "avatar"
+  }, null, 32 /* HYDRATE_EVENTS */), _hoisted_10])], 32 /* HYDRATE_EVENTS */)])]);
 }
 
 /***/ }),
@@ -20763,63 +20807,71 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "This is home page ", -1 /* HOISTED */);
-var _hoisted_2 = {
-  "class": "but"
+var _hoisted_1 = {
+  id: "app"
 };
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, " Add video ", -1 /* HOISTED */);
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", null, null, -1 /* HOISTED */);
-var _hoisted_5 = [_hoisted_3, _hoisted_4];
-var _hoisted_6 = {
-  "class": "container"
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "List category", -1 /* HOISTED */);
+var _hoisted_3 = {
+  "class": "search"
 };
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-  scope: "col",
-  "class": "category-order"
-}, "STT"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-  scope: "col"
-}, "Title"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-  scope: "col"
-}, "Video"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-  scope: "col"
-}, "Action")])], -1 /* HOISTED */);
-var _hoisted_8 = {
-  scope: "row"
+var _hoisted_4 = ["src"];
+var _hoisted_5 = {
+  "class": "butExit"
 };
-var _hoisted_9 = {
-  width: "320",
-  height: "240",
-  controls: ""
-};
-var _hoisted_10 = ["src"];
-var _hoisted_11 = ["onClick"];
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-var _hoisted_13 = ["onClick"];
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "Name", -1 /* HOISTED */);
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "content-form-small"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Teacher:csdfdsfksdfsd"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "labelSmall"
+}, "Number video:"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Rate:"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Number registered:"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Price:"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Status:"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Description:"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br")], -1 /* HOISTED */);
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "addbut",
-    style: {
-      "--clr": "#39FF14"
-    },
-    onClick: _cache[0] || (_cache[0] = function ($event) {
-      return $options.addEditVideo(0);
-    })
-  }, _hoisted_5)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.videos, function (item, index) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.title), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("video", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("source", {
-      src: 'storage/' + item.path,
-      type: "video/mp4"
-    }, null, 8 /* PROPS */, _hoisted_10)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-      "class": "butAction",
-      onClick: function onClick($event) {
-        return $options.addEditVideo(item.id);
-      }
-    }, " Edit ", 8 /* PROPS */, _hoisted_11), _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-      "class": "butAction",
-      onClick: function onClick($event) {
-        return $options.deleteVideo(item.id);
-      }
-    }, " Delete ", 8 /* PROPS */, _hoisted_13)])]);
-  }), 256 /* UNKEYED_FRAGMENT */))])])])], 64 /* STABLE_FRAGMENT */);
+  var _component_dix = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("dix");
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Columns: <input v-model.number=\"numberOfColumns\"> "), _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+      return $data.textSearch = $event;
+    }),
+    onChange: _cache[1] || (_cache[1] = function ($event) {
+      return $options.search($data.textSearch);
+    }),
+    "class": "inputSearch",
+    placeholder: "Search..."
+  }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.textSearch]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", {
+    style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)($options.gridStyle),
+    "class": "card-list"
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.categories, function (item) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+      onClick: _cache[3] || (_cache[3] = function ($event) {
+        return $options.clickCategory();
+      }),
+      key: item.id,
+      "class": "card-item"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <form  class=\"selectItem\">\n      <select >\n        <option>Detail</option>\n        <option>Register</option>\n      </select>\n    </form> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+      "class": "xem",
+      onClick: _cache[2] || (_cache[2] = function ($event) {
+        return $data.showForm = !$data.showForm;
+      })
+    }, "Xem"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+      src: item.path,
+      alt: ""
+    }, null, 8 /* PROPS */, _hoisted_4), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.name), 1 /* TEXT */)]);
+  }), 128 /* KEYED_FRAGMENT */))], 4 /* STYLE */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_dix, null, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [$data.showForm ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", {
+        key: 0,
+        "class": "small-form",
+        onSubmit: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+          return _ctx.submitForm && _ctx.submitForm.apply(_ctx, arguments);
+        }, ["prevent"]))
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        "class": "form-exit",
+        onClick: _cache[4] || (_cache[4] = function ($event) {
+          return $data.showForm = !$data.showForm;
+        })
+      }, "X")]), _hoisted_6, _hoisted_7], 32 /* HYDRATE_EVENTS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+    }),
+    _: 1 /* STABLE */
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div>\n    <button class=\"butItem\" @click=\"showForm = !showForm\">Show Form</button>\n    <form v-if=\"showForm\" class=\"small-form\" @submit.prevent=\"submitForm\">\n      <select >\n        <option>Detail</option>\n        <option>Register</option>\n      </select>\n    </form>\n</div> ")], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -21718,9 +21770,8 @@ __webpack_require__.r(__webpack_exports__);
 // Imports
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
-___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n@charset \"UTF-8\";\nbody {\n  font-family: 'Open Sans', sans-serif;\n  font-weight: 300;\n  line-height: 1.42em;\n  color:#fbf9fd;\n  \n  background-color:#f8f9fa;\n}\nh1 {\n  font-size:3em; \n  font-weight: 300;\n  line-height:1em;\n  text-align: center;\n  color: #4DC3FA;\n}\nh2 {\n  font-size:1em; \n  font-weight: 300;\n  text-align: center;\n  display: block;\n  line-height:1em;\n  padding-bottom: 2em;\n  color: #FB667A;\n}\nh2 a {\n  font-weight: 700;\n  text-transform: uppercase;\n  color: #FB667A;\n  text-decoration: none;\n}\n.blue { color: #185875;\n}\n.yellow { color: #FFF842;\n}\n.container th h1 {\n    font-weight: bold;\n    font-size: 1em;\n  text-align: left;\n  color: #185875;\n}\n.container td {\n    font-weight: normal;\n    font-size: 1em;\n  box-shadow: 0 2px 2px -2px #0E1119;\n}\n.container {\n    text-align: left;\n    overflow: hidden;\n    width: 80%;\n    margin: 0 auto;\n  display: table;\n  padding: 0 0 8em 0;\n}\n.container td, .container th {\n    padding-bottom: 2%;\n    padding-top: 2%;\n  padding-left:2%;\n}\n\n/* Background-color of the odd rows */\n.container tr:nth-child(odd) {\n    background-color: #323C50;\n}\n\n/* Background-color of the even rows */\n.container tr:nth-child(even) {\n    background-color: #2C3446;\n}\n.container th {\n    background-color: #1F2739;\n    color: #9ab0c5;\n}\n.container td {\n    color: #9ab0c5;\n}\n.container td:first-child { color: #FB667A;\n}\n.container tr:hover {\n   background-color: #464A52;\nbox-shadow: 0 6px 6px -6px #0E1119;\n}\n.container td:hover {\n  background-color: #42ff97;\n  color: #403E10;\n  font-weight: bold;\n  \n  box-shadow: #7F7C21 -1px 1px, #7F7C21 -2px 2px, #7F7C21 -3px 3px, #7F7C21 -4px 4px, #7F7C21 -5px 5px, #7F7C21 -6px 6px;\n  transform: translate3d(6px, -6px, 0);\n  \n  transition-delay: 0s;\n    transition-duration: 0.4s;\n    transition-property: all;\n  transition-timing-function: line;\n}\n@media (max-width: 800px) {\n.container td:nth-child(4),\n.container th:nth-child(4) { display: none;\n}\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.search {\n  text-align: right;\n  padding-right: 100px;\n  box-sizing: border-box;\n}\n.inputSearch:hover{\n  background-color: rgb(117, 243, 138);\n}\n.inputSearch {\n  margin-bottom: 1rem;\n  border: 2px solid #976464;\n  border-radius: 5px;\n  font-size: 1rem;\n}\n.card-list {\n  display: grid;\n  grid-gap: 1em;\n}\n.butItem {\n  width: 30px;\n  height: 30px;\n}\n.card-item {\n  /* background-color: rgb(122, 151, 180); */\n  padding: 1em;\n}\n.card-item img {\n  text-align: center;\n  width: 300px;\n  height: 300px;\n  border-radius: 8%;\n}\n.selectItem {\n  text-align: right;\n}\nbody {\n  background: #20262E;\n  padding: 20px;\n  font-family: Helvetica;\n}\n.xem {\n  text-align: right;\n  margin-bottom: 0px;\n  color: blue;\n}\n.small-form {\n    left: 40%;\n    top: 70%;\n    position: absolute;\n    margin-top: -25%;\n    width: 300px;\n    height: 300px;\n    background-color: rgb(239, 245, 243);\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    /* padding: 20px; */\n    /* background-color: #f2f2f2; */\n    border-radius: 10px;\n}\nul {\n  list-style-type: none;\n}\n.form-exit {\n  position: absolute;\n  text-align: right;\n  top: 10px;\n  right: 10px;\n  font-size: 16px;\n  border: none;\n  background-color: transparent;\n  cursor: pointer;\n  color: #999;\n  transition: color 0.3s ease;\n}\n.form-exit:hover {\n  color: #333;\n}\n.content-form-small {\n  text-align: left;\n  margin-left: 0px;\n  margin: 0px;\n  padding-left: 0%;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -21744,7 +21795,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nimg {\n    width: 450px;\n    border-radius: 2px;\n    box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.5);\n    transition: width 1s;\n    padding-top: 30px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\nimg {\n    width: 450px;\n    border-radius: 2px;\n    box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.5);\n    transition: width 1s;\n    /* padding-top: 30px; */\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
